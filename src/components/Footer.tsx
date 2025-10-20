@@ -1,4 +1,7 @@
+import { useScrollToSection } from "@/hooks/use-scroll-to-section";
+
 const Footer = () => {
+  const { scrollToSection } = useScrollToSection();
   return (
     <footer className="bg-pacific-900 text-white mt-24">
       <div className="max-w-[1200px] mx-auto px-6 md:px-12 py-16">
@@ -8,15 +11,7 @@ const Footer = () => {
             <ul className="space-y-2 text-sm text-white/80">
               <li>
                 <button
-                  onClick={() => {
-                    const element = document.getElementById("whats-inside");
-                    if (element) {
-                      const offset = 80;
-                      const elementPosition = element.getBoundingClientRect().top;
-                      const offsetPosition = elementPosition + window.pageYOffset - offset;
-                      window.scrollTo({ top: offsetPosition, behavior: "smooth" });
-                    }
-                  }}
+                  onClick={() => scrollToSection("whats-inside")}
                   className="hover:text-white transition-smooth"
                 >
                   What's Inside
@@ -24,15 +19,7 @@ const Footer = () => {
               </li>
               <li>
                 <button
-                  onClick={() => {
-                    const element = document.getElementById("how-it-works");
-                    if (element) {
-                      const offset = 80;
-                      const elementPosition = element.getBoundingClientRect().top;
-                      const offsetPosition = elementPosition + window.pageYOffset - offset;
-                      window.scrollTo({ top: offsetPosition, behavior: "smooth" });
-                    }
-                  }}
+                  onClick={() => scrollToSection("how-it-works")}
                   className="hover:text-white transition-smooth"
                 >
                   How It Works
@@ -40,15 +27,7 @@ const Footer = () => {
               </li>
               <li>
                 <button
-                  onClick={() => {
-                    const element = document.getElementById("faq");
-                    if (element) {
-                      const offset = 80;
-                      const elementPosition = element.getBoundingClientRect().top;
-                      const offsetPosition = elementPosition + window.pageYOffset - offset;
-                      window.scrollTo({ top: offsetPosition, behavior: "smooth" });
-                    }
-                  }}
+                  onClick={() => scrollToSection("faq")}
                   className="hover:text-white transition-smooth"
                 >
                   FAQ

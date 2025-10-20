@@ -23,32 +23,169 @@ import {
 } from "lucide-react";
 import heroImage from "@/assets/hero-coastal.jpg";
 import paperworkImage from "@/assets/paperwork-flatlay.jpg";
+import { useScrollToSection } from "@/hooks/use-scroll-to-section";
+import { useMemo } from "react";
 
 const Index = () => {
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      const offset = 80;
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - offset;
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth",
-      });
-    }
-  };
+  const { scrollToSection } = useScrollToSection();
+
+  const features = useMemo(() => [
+    {
+      icon: DollarSign,
+      title: "Pricing Guide & Worksheets",
+      description: "Find market value using KBB, comps & mileage/condition adjustments. Templates included.",
+    },
+    {
+      icon: Camera,
+      title: "Photo & Listing Blueprint",
+      description: "Shot list, angles, lighting tips, and winning copy templates.",
+    },
+    {
+      icon: MessageSquare,
+      title: "Buyer Screening Scripts",
+      description: "Text/phone scripts to filter tire-kickers and time-wasters.",
+    },
+    {
+      icon: Shield,
+      title: "Safe Test-Drive Protocol",
+      description: "Insurance checks, ID verification, route plan, and red-flag checklist.",
+    },
+    {
+      icon: Handshake,
+      title: "Offer & Negotiation Tactics",
+      description: "Counter templates, deposit handling, and how to create urgency without pressure.",
+    },
+    {
+      icon: FileCheck,
+      title: "Closeout & DMV Paperwork",
+      description: "Step-by-step CA transfer checklist, smog nuances, Notice of Transfer (REG 138), Bill of Sale, title instructions.",
+    },
+  ], []);
+
+  const steps = useMemo(() => [
+    {
+      number: "1",
+      title: "Purchase & download your kit",
+      description: "Instant access to templates and checklists.",
+    },
+    {
+      number: "2",
+      title: "Follow the guided flow",
+      description: "Do one section per day—or binge it in a weekend.",
+    },
+    {
+      number: "3",
+      title: "List, screen, sell, file",
+      description: "Use our scripts and closeout checklist to transfer ownership right.",
+    },
+  ], []);
+
+  const testimonials = useMemo(() => [
+    {
+      quote: "I sold my CR-V in 48 hours for $1,100 more than my first draft listing.",
+      author: "Jamie R.",
+      location: "San Diego",
+    },
+    {
+      quote: "The DMV steps section alone saved me a day.",
+      author: "Mateo G.",
+      location: "Sacramento",
+    },
+    {
+      quote: "Scripts made screening buyers painless.",
+      author: "Priya S.",
+      location: "Long Beach",
+    },
+  ], []);
+
+  const beforeItems = useMemo(() => [
+    "Guessing the price",
+    "Overwhelming forms",
+    "Risky test drives",
+    "Lowball offers",
+    "Scattered browser tabs",
+    "Confusion about smog/title",
+  ], []);
+
+  const afterItems = useMemo(() => [
+    "Clear pricing",
+    "Simple paperwork path",
+    "Safe test-drive plan",
+    "Confident closeout",
+    "Single, calm checklist",
+    "Price confidence",
+  ], []);
+
+  const comparisonFeatures = useMemo(() => [
+    "Correct pricing framework",
+    "Winning listing template",
+    "Screening scripts",
+    "Safety test-drive plan",
+    "CA paperwork steps",
+    "Red-flag checks",
+    "Negotiation templates",
+    "Clean handoff checklist",
+  ], []);
+
+  const faqItems = useMemo(() => [
+    {
+      value: "item-1",
+      question: "Will this work if I still have a loan?",
+      answer: "Yes—the guide covers payoff steps, timing, and the documents you'll need to coordinate with your lender. We walk you through how to handle the title transfer when there's an outstanding loan.",
+    },
+    {
+      value: "item-2",
+      question: "Do I need a smog check?",
+      answer: "The guide explains exactly how smog checks interact with private sales in California, including model year exemptions, who's responsible, and edge cases. We make sure you know when it's required and when it's not.",
+    },
+    {
+      value: "item-3",
+      question: "How fast can I sell?",
+      answer: "It depends on your car and price point, but our pricing and listing blueprint are designed to accelerate interest from serious buyers. Many sellers see results within days when they follow the system.",
+    },
+    {
+      value: "item-4",
+      question: "Is this legal advice?",
+      answer: "No—this is an educational resource that includes official CA DMV links and steps. For specific legal questions, consult an attorney.",
+    },
+    {
+      value: "item-5",
+      question: "Can I use it on my phone?",
+      answer: "Yes—everything is mobile-friendly and printable. Access the kit on any device and print what you need.",
+    },
+    {
+      value: "item-6",
+      question: "What if the buyer is from out of state?",
+      answer: "We outline CA seller responsibilities and point out cross-state nuances to be aware of. The kit focuses on what you need to do as a California seller.",
+    },
+  ], []);
+
+  const benefits = useMemo(() => [
+    "Save hours of guesswork",
+    "Avoid deal-killing mistakes",
+    "Look like a pro in your listing",
+  ], []);
+
+  const capabilities = useMemo(() => [
+    "Price it right",
+    "Create a pro-grade listing",
+    "Screen for serious buyers",
+    "Run safe test drives",
+    "Close cleanly, zero DMV surprises",
+  ], []);
 
   return (
     <div className="min-h-screen">
       <Header />
 
       {/* HERO SECTION */}
-      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden" aria-label="Hero section">
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
             backgroundImage: `linear-gradient(rgba(13, 43, 62, 0.7), rgba(13, 43, 62, 0.5)), url(${heroImage})`,
           }}
+          aria-hidden="true"
         />
         <div className="relative z-10 max-w-[1200px] mx-auto px-6 md:px-12 py-32 text-center">
           <h1 className="text-white mb-6 animate-fade-in">
@@ -64,6 +201,7 @@ const Index = () => {
               size="xl"
               onClick={() => scrollToSection("price")}
               data-cta="cta-hero"
+              aria-label="Get the California Car Seller Kit for $19.99"
             >
               Get the Kit — $19.99
             </Button>
@@ -72,21 +210,22 @@ const Index = () => {
               size="xl"
               onClick={() => scrollToSection("whats-inside")}
               className="bg-white/10 backdrop-blur-sm border-white/30 text-white hover:bg-white/20 hover:text-white"
+              aria-label="Learn more about what's included in the kit"
             >
               See What's Inside
             </Button>
           </div>
-          <div className="flex flex-wrap justify-center gap-8 text-white/90 text-sm animate-fade-in [animation-delay:450ms]">
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-5 h-5 text-seafoam-300" />
+          <div className="flex flex-wrap justify-center gap-8 text-white/90 text-sm animate-fade-in [animation-delay:450ms]" role="list" aria-label="Key features">
+            <div className="flex items-center gap-2" role="listitem">
+              <CheckCircle2 className="w-5 h-5 text-seafoam-300" aria-hidden="true" />
               <span>California-specific</span>
             </div>
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-5 h-5 text-seafoam-300" />
+            <div className="flex items-center gap-2" role="listitem">
+              <CheckCircle2 className="w-5 h-5 text-seafoam-300" aria-hidden="true" />
               <span>DMV forms & checklist</span>
             </div>
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-5 h-5 text-seafoam-300" />
+            <div className="flex items-center gap-2" role="listitem">
+              <CheckCircle2 className="w-5 h-5 text-seafoam-300" aria-hidden="true" />
               <span>Finish in a weekend</span>
             </div>
           </div>
@@ -104,36 +243,14 @@ const Index = () => {
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <FeatureCard
-              icon={DollarSign}
-              title="Pricing Guide & Worksheets"
-              description="Find market value using KBB, comps & mileage/condition adjustments. Templates included."
-            />
-            <FeatureCard
-              icon={Camera}
-              title="Photo & Listing Blueprint"
-              description="Shot list, angles, lighting tips, and winning copy templates."
-            />
-            <FeatureCard
-              icon={MessageSquare}
-              title="Buyer Screening Scripts"
-              description="Text/phone scripts to filter tire-kickers and time-wasters."
-            />
-            <FeatureCard
-              icon={Shield}
-              title="Safe Test-Drive Protocol"
-              description="Insurance checks, ID verification, route plan, and red-flag checklist."
-            />
-            <FeatureCard
-              icon={Handshake}
-              title="Offer & Negotiation Tactics"
-              description="Counter templates, deposit handling, and how to create urgency without pressure."
-            />
-            <FeatureCard
-              icon={FileCheck}
-              title="Closeout & DMV Paperwork"
-              description="Step-by-step CA transfer checklist, smog nuances, Notice of Transfer (REG 138), Bill of Sale, title instructions."
-            />
+            {features.map((feature, index) => (
+              <FeatureCard
+                key={index}
+                icon={feature.icon}
+                title={feature.title}
+                description={feature.description}
+              />
+            ))}
           </div>
           <div className="text-center mt-12">
             <Button variant="hero" size="lg" onClick={() => scrollToSection("price")}>
@@ -181,13 +298,7 @@ const Index = () => {
             <div className="bg-card rounded-2xl p-8 shadow-card">
               <h3 className="font-semibold mb-6 text-pacific-600">What you'll confidently do</h3>
               <ul className="space-y-4">
-                {[
-                  "Price it right",
-                  "Create a pro-grade listing",
-                  "Screen for serious buyers",
-                  "Run safe test drives",
-                  "Close cleanly, zero DMV surprises",
-                ].map((item, index) => (
+                {capabilities.map((item, index) => (
                   <li key={index} className="flex items-start gap-3">
                     <Check className="w-5 h-5 text-seafoam-300 shrink-0 mt-0.5" />
                     <span className="text-foreground">{item}</span>
@@ -209,21 +320,14 @@ const Index = () => {
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-8 mb-12">
-            <StepCard
-              number="1"
-              title="Purchase & download your kit"
-              description="Instant access to templates and checklists."
-            />
-            <StepCard
-              number="2"
-              title="Follow the guided flow"
-              description="Do one section per day—or binge it in a weekend."
-            />
-            <StepCard
-              number="3"
-              title="List, screen, sell, file"
-              description="Use our scripts and closeout checklist to transfer ownership right."
-            />
+            {steps.map((step, index) => (
+              <StepCard
+                key={index}
+                number={step.number}
+                title={step.title}
+                description={step.description}
+              />
+            ))}
           </div>
           <div className="bg-seafoam-300/10 rounded-lg p-6 text-center border border-seafoam-300/20">
             <p className="text-sm text-foreground/80">
@@ -244,14 +348,7 @@ const Index = () => {
                 Before
               </div>
               <ul className="space-y-4">
-                {[
-                  "Guessing the price",
-                  "Overwhelming forms",
-                  "Risky test drives",
-                  "Lowball offers",
-                  "Scattered browser tabs",
-                  "Confusion about smog/title",
-                ].map((item, index) => (
+                {beforeItems.map((item, index) => (
                   <li key={index} className="flex items-start gap-3">
                     <X className="w-5 h-5 text-destructive shrink-0 mt-0.5" />
                     <span className="text-muted-foreground">{item}</span>
@@ -264,14 +361,7 @@ const Index = () => {
                 After
               </div>
               <ul className="space-y-4">
-                {[
-                  "Clear pricing",
-                  "Simple paperwork path",
-                  "Safe test-drive plan",
-                  "Confident closeout",
-                  "Single, calm checklist",
-                  "Price confidence",
-                ].map((item, index) => (
+                {afterItems.map((item, index) => (
                   <li key={index} className="flex items-start gap-3">
                     <Check className="w-5 h-5 text-seafoam-300 shrink-0 mt-0.5" />
                     <span className="text-foreground font-medium">{item}</span>
@@ -304,21 +394,14 @@ const Index = () => {
             </div>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
-            <TestimonialCard
-              quote="I sold my CR-V in 48 hours for $1,100 more than my first draft listing."
-              author="Jamie R."
-              location="San Diego"
-            />
-            <TestimonialCard
-              quote="The DMV steps section alone saved me a day."
-              author="Mateo G."
-              location="Sacramento"
-            />
-            <TestimonialCard
-              quote="Scripts made screening buyers painless."
-              author="Priya S."
-              location="Long Beach"
-            />
+            {testimonials.map((testimonial, index) => (
+              <TestimonialCard
+                key={index}
+                quote={testimonial.quote}
+                author={testimonial.author}
+                location={testimonial.location}
+              />
+            ))}
           </div>
         </div>
       </section>
@@ -331,11 +414,7 @@ const Index = () => {
               <h2 className="mb-2">CA Car Seller Kit</h2>
               <div className="text-5xl font-heading font-bold text-pacific-500 mb-6">$19.99</div>
               <ul className="space-y-3 text-left mb-8">
-                {[
-                  "Save hours of guesswork",
-                  "Avoid deal-killing mistakes",
-                  "Look like a pro in your listing",
-                ].map((item, index) => (
+                {benefits.map((item, index) => (
                   <li key={index} className="flex items-start gap-3">
                     <Check className="w-5 h-5 text-seafoam-300 shrink-0 mt-0.5" />
                     <span className="text-foreground">{item}</span>
@@ -388,16 +467,7 @@ const Index = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {[
-                    "Correct pricing framework",
-                    "Winning listing template",
-                    "Screening scripts",
-                    "Safety test-drive plan",
-                    "CA paperwork steps",
-                    "Red-flag checks",
-                    "Negotiation templates",
-                    "Clean handoff checklist",
-                  ].map((feature, index) => (
+                  {comparisonFeatures.map((feature, index) => (
                     <tr key={index} className="border-b border-border last:border-0">
                       <td className="p-6 text-foreground">{feature}</td>
                       <td className="text-center p-6">
@@ -425,86 +495,20 @@ const Index = () => {
         <div className="max-w-[800px] mx-auto px-6">
           <h2 className="text-center mb-12">Frequently Asked Questions</h2>
           <Accordion type="single" collapsible className="space-y-4">
-            <AccordionItem
-              value="item-1"
-              className="bg-card rounded-lg px-6 shadow-card border-none"
-            >
-              <AccordionTrigger className="hover:no-underline" data-track="faq-open">
-                Will this work if I still have a loan?
-              </AccordionTrigger>
-              <AccordionContent className="text-muted-foreground">
-                Yes—the guide covers payoff steps, timing, and the documents you'll need to
-                coordinate with your lender. We walk you through how to handle the title transfer
-                when there's an outstanding loan.
-              </AccordionContent>
-            </AccordionItem>
-
-            <AccordionItem
-              value="item-2"
-              className="bg-card rounded-lg px-6 shadow-card border-none"
-            >
-              <AccordionTrigger className="hover:no-underline">
-                Do I need a smog check?
-              </AccordionTrigger>
-              <AccordionContent className="text-muted-foreground">
-                The guide explains exactly how smog checks interact with private sales in
-                California, including model year exemptions, who's responsible, and edge cases. We
-                make sure you know when it's required and when it's not.
-              </AccordionContent>
-            </AccordionItem>
-
-            <AccordionItem
-              value="item-3"
-              className="bg-card rounded-lg px-6 shadow-card border-none"
-            >
-              <AccordionTrigger className="hover:no-underline">
-                How fast can I sell?
-              </AccordionTrigger>
-              <AccordionContent className="text-muted-foreground">
-                It depends on your car and price point, but our pricing and listing blueprint are
-                designed to accelerate interest from serious buyers. Many sellers see results
-                within days when they follow the system.
-              </AccordionContent>
-            </AccordionItem>
-
-            <AccordionItem
-              value="item-4"
-              className="bg-card rounded-lg px-6 shadow-card border-none"
-            >
-              <AccordionTrigger className="hover:no-underline">
-                Is this legal advice?
-              </AccordionTrigger>
-              <AccordionContent className="text-muted-foreground">
-                No—this is an educational resource that includes official CA DMV links and steps.
-                For specific legal questions, consult an attorney.
-              </AccordionContent>
-            </AccordionItem>
-
-            <AccordionItem
-              value="item-5"
-              className="bg-card rounded-lg px-6 shadow-card border-none"
-            >
-              <AccordionTrigger className="hover:no-underline">
-                Can I use it on my phone?
-              </AccordionTrigger>
-              <AccordionContent className="text-muted-foreground">
-                Yes—everything is mobile-friendly and printable. Access the kit on any device and
-                print what you need.
-              </AccordionContent>
-            </AccordionItem>
-
-            <AccordionItem
-              value="item-6"
-              className="bg-card rounded-lg px-6 shadow-card border-none"
-            >
-              <AccordionTrigger className="hover:no-underline">
-                What if the buyer is from out of state?
-              </AccordionTrigger>
-              <AccordionContent className="text-muted-foreground">
-                We outline CA seller responsibilities and point out cross-state nuances to be aware
-                of. The kit focuses on what you need to do as a California seller.
-              </AccordionContent>
-            </AccordionItem>
+            {faqItems.map((item) => (
+              <AccordionItem
+                key={item.value}
+                value={item.value}
+                className="bg-card rounded-lg px-6 shadow-card border-none"
+              >
+                <AccordionTrigger className="hover:no-underline" data-track="faq-open">
+                  {item.question}
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground">
+                  {item.answer}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
           </Accordion>
         </div>
       </section>

@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import { useScrollToSection } from "@/hooks/use-scroll-to-section";
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
+  const { scrollToSection, scrollToTop } = useScrollToSection();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -11,19 +13,6 @@ const Header = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      const offset = 80;
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - offset;
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth",
-      });
-    }
-  };
 
   return (
     <header
@@ -37,18 +26,19 @@ const Header = () => {
         <div className="flex items-center justify-between h-20">
           <div className="flex items-center">
             <button
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              onClick={scrollToTop}
               className="font-heading font-bold text-lg md:text-xl tracking-tighter bg-pacific-900 text-white px-3 py-1.5 rounded-md hover:bg-pacific-600 transition-smooth"
             >
               CA Car Seller Kit
             </button>
           </div>
 
-          <nav className="hidden lg:flex items-center gap-8">
+          <nav className="hidden lg:flex items-center gap-8" role="navigation" aria-label="Main navigation">
             <button
               onClick={() => scrollToSection("whats-inside")}
               className="text-sm font-medium text-foreground/80 hover:text-foreground transition-smooth"
               data-track="nav"
+              aria-label="Navigate to What's Inside section"
             >
               What's Inside
             </button>
@@ -56,6 +46,7 @@ const Header = () => {
               onClick={() => scrollToSection("how-it-works")}
               className="text-sm font-medium text-foreground/80 hover:text-foreground transition-smooth"
               data-track="nav"
+              aria-label="Navigate to How It Works section"
             >
               How It Works
             </button>
@@ -63,6 +54,7 @@ const Header = () => {
               onClick={() => scrollToSection("results")}
               className="text-sm font-medium text-foreground/80 hover:text-foreground transition-smooth"
               data-track="nav"
+              aria-label="Navigate to Results section"
             >
               Results
             </button>
@@ -70,6 +62,7 @@ const Header = () => {
               onClick={() => scrollToSection("faq")}
               className="text-sm font-medium text-foreground/80 hover:text-foreground transition-smooth"
               data-track="nav"
+              aria-label="Navigate to FAQ section"
             >
               FAQ
             </button>

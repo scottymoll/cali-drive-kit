@@ -1,4 +1,5 @@
 import { LucideIcon } from "lucide-react";
+import { memo } from "react";
 
 interface FeatureCardProps {
   icon: LucideIcon;
@@ -6,7 +7,7 @@ interface FeatureCardProps {
   description: string;
 }
 
-const FeatureCard = ({ icon: Icon, title, description }: FeatureCardProps) => {
+const FeatureCard = memo(({ icon: Icon, title, description }: FeatureCardProps) => {
   return (
     <div className="group bg-card rounded-lg p-6 shadow-card hover:shadow-card-hover transition-smooth hover:scale-[1.02]">
       <div className="flex items-start gap-4">
@@ -20,6 +21,8 @@ const FeatureCard = ({ icon: Icon, title, description }: FeatureCardProps) => {
       </div>
     </div>
   );
-};
+});
+
+FeatureCard.displayName = "FeatureCard";
 
 export default FeatureCard;

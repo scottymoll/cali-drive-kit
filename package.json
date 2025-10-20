@@ -1,7 +1,8 @@
 {
-  "name": "vite_react_shadcn_ts",
+  "name": "cali-drive-kit",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "California Car Seller Kit - A comprehensive guide for selling your car in California with DMV-compliant forms, pricing tools, and step-by-step instructions.",
   "type": "module",
   "scripts": {
     "dev": "vite",

@@ -1,4 +1,5 @@
 import { Quote } from "lucide-react";
+import { memo } from "react";
 
 interface TestimonialCardProps {
   quote: string;
@@ -6,7 +7,7 @@ interface TestimonialCardProps {
   location: string;
 }
 
-const TestimonialCard = ({ quote, author, location }: TestimonialCardProps) => {
+const TestimonialCard = memo(({ quote, author, location }: TestimonialCardProps) => {
   return (
     <div className="bg-card rounded-lg p-6 shadow-card">
       <Quote className="w-8 h-8 text-seafoam-300 mb-4" />
@@ -17,6 +18,8 @@ const TestimonialCard = ({ quote, author, location }: TestimonialCardProps) => {
       </div>
     </div>
   );
-};
+});
+
+TestimonialCard.displayName = "TestimonialCard";
 
 export default TestimonialCard;

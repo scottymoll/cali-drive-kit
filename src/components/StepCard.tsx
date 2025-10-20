@@ -1,10 +1,12 @@
+import { memo } from "react";
+
 interface StepCardProps {
   number: string;
   title: string;
   description: string;
 }
 
-const StepCard = ({ number, title, description }: StepCardProps) => {
+const StepCard = memo(({ number, title, description }: StepCardProps) => {
   return (
     <div className="relative bg-card rounded-lg p-8 shadow-card animate-fade-in">
       <div className="absolute -top-4 -left-4 w-12 h-12 rounded-full bg-pacific-500 text-white flex items-center justify-center font-heading font-bold text-xl shadow-lg">
@@ -14,6 +16,8 @@ const StepCard = ({ number, title, description }: StepCardProps) => {
       <p className="text-muted-foreground leading-relaxed">{description}</p>
     </div>
   );
-};
+});
+
+StepCard.displayName = "StepCard";
 
 export default StepCard;
