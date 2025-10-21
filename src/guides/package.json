@@ -1,0 +1,12 @@
+{
+  "name": "ca-car-seller-kit-pdfs",
+  "version": "1.0.0",
+  "description": "PDF generation for CA Car Seller Kit guides",
+  "main": "generate-pdfs.js",
+  "scripts": {
+    "generate": "node generate-pdfs.js"
+  },
+  "dependencies": {
+    "puppeteer": "^21.0.0"
+  }
+}
