@@ -102,63 +102,63 @@ const Index = () => {
   const premiumFeatures = useMemo(() => [
     {
       icon: BarChart3,
-      title: "Advanced Market Analysis Tool",
-      description: "AI-powered pricing calculator with real-time market data, seasonal adjustments, and competitor analysis for maximum profit.",
-    },
-    {
-      icon: Video,
-      title: "Professional Video Training Series",
-      description: "15+ video modules covering every aspect of car selling, from preparation to closing, with expert tips and real examples.",
-    },
-    {
-      icon: Smartphone,
-      title: "Mobile App & Digital Tools",
-      description: "iOS/Android app with photo optimization, listing templates, buyer tracking, and push notifications for inquiries.",
-    },
-    {
-      icon: Headphones,
-      title: "1-on-1 Expert Consultation",
-      description: "30-minute phone consultation with a car selling expert to review your listing and provide personalized advice.",
+      title: "Advanced Pricing Mastery Guide",
+      description: "Comprehensive pricing strategies with market analysis techniques, seasonal adjustments, and competitor research methods to maximize profit.",
     },
     {
       icon: FileText,
-      title: "Legal Document Generator",
-      description: "Automated Bill of Sale, Purchase Agreement, and DMV forms with CA-specific legal language and validation.",
+      title: "Complete Legal Forms Library",
+      description: "All CA-specific legal documents including Bill of Sale, Purchase Agreement, DMV forms, and title transfer instructions with fill-in templates.",
     },
     {
       icon: Calculator,
-      title: "Profit Maximization Calculator",
-      description: "Advanced ROI calculator considering timing, seasonality, repairs, and market trends to optimize your sale price.",
+      title: "Profit Optimization Worksheets",
+      description: "Advanced calculation tools for timing your sale, repair ROI analysis, and market trend evaluation to get the best price.",
     },
     {
       icon: Target,
-      title: "Buyer Psychology Masterclass",
-      description: "Deep dive into buyer behavior, objection handling, and psychological triggers to close deals faster.",
+      title: "Buyer Psychology & Negotiation Guide",
+      description: "Complete guide to buyer behavior, objection handling techniques, and psychological triggers to close deals faster and at higher prices.",
     },
     {
       icon: TrendingUp,
-      title: "Market Trend Reports",
-      description: "Monthly reports on CA car market trends, seasonal pricing patterns, and demand forecasts for your vehicle type.",
+      title: "Market Intelligence Handbook",
+      description: "Comprehensive guide to CA car market trends, seasonal patterns, demand forecasting, and timing strategies for maximum profit.",
     },
     {
       icon: Award,
-      title: "Premium Templates Library",
-      description: "50+ professional templates for listings, emails, contracts, and follow-ups across all major platforms.",
+      title: "Professional Templates Collection",
+      description: "50+ premium templates for listings, emails, contracts, follow-ups, and social media posts across all major selling platforms.",
     },
     {
       icon: Lock,
-      title: "Fraud Protection Suite",
-      description: "Advanced buyer verification tools, payment security protocols, and scam detection checklists.",
+      title: "Fraud Protection & Safety Guide",
+      description: "Complete security protocols, buyer verification methods, payment safety guidelines, and scam detection checklists.",
+    },
+    {
+      icon: Camera,
+      title: "Professional Photography Guide",
+      description: "Advanced photo techniques, lighting setups, angle strategies, and editing tips to create listings that sell faster.",
+    },
+    {
+      icon: MessageSquare,
+      title: "Advanced Communication Scripts",
+      description: "Professional scripts for every stage: initial contact, screening, test drives, negotiations, and closing the deal.",
+    },
+    {
+      icon: Shield,
+      title: "Complete Safety Protocol Guide",
+      description: "Comprehensive safety procedures for test drives, meetings, payment handling, and protecting yourself throughout the sale.",
+    },
+    {
+      icon: FileCheck,
+      title: "DMV & Paperwork Master Guide",
+      description: "Step-by-step CA DMV procedures, smog check requirements, title transfer processes, and all necessary documentation.",
     },
     {
       icon: Download,
-      title: "Offline Access & Backup",
-      description: "Download all materials for offline use, cloud backup, and lifetime access to updates and new features.",
-    },
-    {
-      icon: Globe,
-      title: "Multi-Platform Optimization",
-      description: "Automated cross-posting to Craigslist, Facebook, AutoTrader, Cars.com with platform-specific optimizations.",
+      title: "Lifetime Access & Updates",
+      description: "Download all materials for offline use, lifetime access to updates, and new content additions as CA laws change.",
     },
   ], []);
 
@@ -200,37 +200,37 @@ const Index = () => {
 
   const premiumTestimonials = useMemo(() => [
     {
-      quote: "The AI pricing tool helped me sell my Tesla for $3,200 above market value. The consultation call was worth every penny!",
+      quote: "The advanced pricing guide helped me sell my Tesla for $3,200 above market value. The market intelligence section was invaluable!",
       author: "Marcus T.",
       location: "Los Angeles",
       premium: true,
     },
     {
-      quote: "The video training series transformed how I approach car selling. I've sold 4 cars this year using their methods.",
+      quote: "The comprehensive guide transformed how I approach car selling. I've sold 4 cars this year using their strategies.",
       author: "Sarah K.",
       location: "San Francisco",
       premium: true,
     },
     {
-      quote: "The mobile app made managing multiple listings effortless. The fraud protection saved me from 3 potential scams.",
+      quote: "The photography guide made my listings look professional. The fraud protection section saved me from 3 potential scams.",
       author: "David L.",
       location: "San Diego",
       premium: true,
     },
     {
-      quote: "The market trend reports helped me time my sale perfectly. Sold for $2,800 more than I expected.",
+      quote: "The market timing guide helped me sell at the perfect moment. Got $2,800 more than I expected.",
       author: "Elena M.",
       location: "Sacramento",
       premium: true,
     },
     {
-      quote: "The legal document generator was a game-changer. Everything was legally sound and professional.",
+      quote: "The legal forms library was a game-changer. Everything was legally sound and professional.",
       author: "Robert H.",
       location: "Fresno",
       premium: true,
     },
     {
-      quote: "The buyer psychology masterclass helped me close deals 40% faster. The ROI was incredible.",
+      quote: "The buyer psychology guide helped me close deals 40% faster. The negotiation scripts were pure gold.",
       author: "Jennifer W.",
       location: "Oakland",
       premium: true,
@@ -302,38 +302,38 @@ const Index = () => {
   const premiumFaqItems = useMemo(() => [
     {
       value: "premium-1",
-      question: "How does the AI pricing tool work?",
-      answer: "Our AI analyzes real-time market data, seasonal trends, your vehicle's condition, mileage, and local demand to suggest the optimal listing price. It considers factors like time of year, economic conditions, and competitor listings to maximize your profit potential.",
+      question: "What's included in the Premium guide?",
+      answer: "The Premium guide includes everything from the Basic kit plus advanced pricing strategies, complete legal forms library, buyer psychology techniques, professional photography guide, market intelligence, fraud protection protocols, and 50+ premium templates - all in one comprehensive guide.",
     },
     {
       value: "premium-2",
-      question: "What's included in the expert consultation?",
-      answer: "You get a 30-minute phone call with a car selling expert who will review your listing, pricing strategy, and answer any specific questions. They'll provide personalized advice based on your vehicle and local market conditions.",
+      question: "How is this different from the Basic kit?",
+      answer: "The Premium guide contains all Basic features plus advanced strategies for pricing, photography, negotiation, market timing, and comprehensive legal forms. It's designed for sellers who want maximum profit and professional results.",
     },
     {
       value: "premium-3",
-      question: "How does the mobile app work?",
-      answer: "The app includes photo optimization tools, listing templates, buyer inquiry tracking, push notifications, and offline access to all materials. It syncs across devices and provides real-time market updates.",
+      question: "Is everything included in the guide?",
+      answer: "Yes! Everything is included in the comprehensive guide - no separate consultations, videos, or apps needed. You get all the advanced strategies, templates, forms, and techniques in one complete package.",
     },
     {
       value: "premium-4",
-      question: "What's in the video training series?",
-      answer: "15+ professional video modules covering pricing strategies, photography techniques, buyer psychology, negotiation tactics, safety protocols, and DMV procedures. Each video is 10-20 minutes with actionable tips you can implement immediately.",
+      question: "What's the advanced pricing guide?",
+      answer: "The pricing guide includes market analysis techniques, seasonal adjustment strategies, competitor research methods, timing optimization, and profit maximization worksheets to help you price your car for maximum profit.",
     },
     {
       value: "premium-5",
-      question: "How often are market trend reports updated?",
-      answer: "Reports are updated monthly with current market conditions, seasonal pricing patterns, demand forecasts, and specific recommendations for your vehicle type and location in California.",
+      question: "What legal forms are included?",
+      answer: "Complete CA-specific legal documents including Bill of Sale, Purchase Agreement, DMV forms, title transfer instructions, Notice of Transfer (REG 138), and all necessary paperwork with fill-in templates.",
     },
     {
       value: "premium-6",
-      question: "What's the fraud protection suite?",
-      answer: "Advanced buyer verification tools, payment security protocols, scam detection checklists, and red-flag identification systems to protect you from common car selling scams and fraudulent buyers.",
+      question: "What's the fraud protection guide?",
+      answer: "Comprehensive security protocols including buyer verification methods, payment safety guidelines, scam detection checklists, red-flag identification, and safety procedures for test drives and meetings.",
     },
     {
       value: "premium-7",
       question: "Do I get lifetime access to updates?",
-      answer: "Yes! Premium customers get lifetime access to all current and future updates, new features, additional templates, and any new video content we add to the training series.",
+      answer: "Yes! Premium customers get lifetime access to all current and future updates, new templates, additional strategies, and any new content we add as CA laws and market conditions change.",
     },
     {
       value: "premium-8",
@@ -349,13 +349,13 @@ const Index = () => {
   ], []);
 
   const premiumBenefits = useMemo(() => [
-    "Maximize profit with AI-powered pricing",
-    "Professional video training series",
-    "1-on-1 expert consultation",
-    "Mobile app with advanced tools",
-    "Legal document automation",
-    "Fraud protection suite",
-    "Market trend intelligence",
+    "Complete pricing mastery guide",
+    "All legal forms & templates included",
+    "Advanced buyer psychology strategies",
+    "Professional photography techniques",
+    "Comprehensive safety protocols",
+    "Market intelligence & timing guide",
+    "50+ premium templates & scripts",
     "Lifetime access & updates",
   ], []);
 
@@ -473,7 +473,7 @@ const Index = () => {
                 PREMIUM KIT
               </div>
               <h3 className="text-3xl font-bold mb-2 text-pacific-900">Professional Edition - $97</h3>
-              <p className="text-pacific-700 text-lg">Advanced tools for maximum profit and professional results</p>
+              <p className="text-pacific-700 text-lg">Complete comprehensive guide with all advanced strategies and tools</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {premiumFeatures.map((feature, index) => (
@@ -723,7 +723,7 @@ const Index = () => {
               <div className="text-center mb-8">
                 <h3 className="text-2xl font-semibold mb-2 text-white">Premium Kit</h3>
                 <div className="text-4xl font-heading font-bold text-golden-300 mb-2">$97</div>
-                <p className="text-pacific-100">Professional tools for maximum profit</p>
+                <p className="text-pacific-100">Complete comprehensive guide for maximum profit</p>
               </div>
               <ul className="space-y-3 text-left mb-8">
                 {premiumBenefits.map((item, index) => (
@@ -742,7 +742,7 @@ const Index = () => {
                 Get Premium Kit — $97
               </Button>
               <div className="text-center text-xs text-pacific-100">
-                <p>Lifetime access • Mobile app • Expert support</p>
+                <p>Lifetime access • Complete guide • All templates included</p>
               </div>
             </div>
           </div>
@@ -753,15 +753,15 @@ const Index = () => {
             <div className="grid md:grid-cols-3 gap-8 text-center">
               <div>
                 <div className="text-3xl font-bold text-pacific-500 mb-2">$2,800+</div>
-                <div className="text-sm text-muted-foreground">Average extra profit with AI pricing</div>
+                <div className="text-sm text-muted-foreground">Average extra profit with advanced pricing</div>
               </div>
               <div>
                 <div className="text-3xl font-bold text-pacific-500 mb-2">40%</div>
-                <div className="text-sm text-muted-foreground">Faster sale with buyer psychology</div>
+                <div className="text-sm text-muted-foreground">Faster sale with psychology techniques</div>
               </div>
               <div>
-                <div className="text-3xl font-bold text-pacific-500 mb-2">$500</div>
-                <div className="text-sm text-muted-foreground">Value of expert consultation alone</div>
+                <div className="text-3xl font-bold text-pacific-500 mb-2">$500+</div>
+                <div className="text-sm text-muted-foreground">Value of professional templates & forms</div>
               </div>
             </div>
           </div>
@@ -851,7 +851,7 @@ const Index = () => {
                     </td>
                   </tr>
                   <tr className="border-b border-border">
-                    <td className="p-6 text-foreground font-medium">AI-Powered Pricing Tool</td>
+                    <td className="p-6 text-foreground font-medium">Advanced Pricing Guide</td>
                     <td className="text-center p-6">
                       <X className="w-5 h-5 text-destructive mx-auto" />
                     </td>
@@ -863,7 +863,7 @@ const Index = () => {
                     </td>
                   </tr>
                   <tr className="border-b border-border">
-                    <td className="p-6 text-foreground font-medium">Video Training Series</td>
+                    <td className="p-6 text-foreground font-medium">Complete Legal Forms Library</td>
                     <td className="text-center p-6">
                       <X className="w-5 h-5 text-destructive mx-auto" />
                     </td>
@@ -875,7 +875,7 @@ const Index = () => {
                     </td>
                   </tr>
                   <tr className="border-b border-border">
-                    <td className="p-6 text-foreground font-medium">Mobile App</td>
+                    <td className="p-6 text-foreground font-medium">Professional Photography Guide</td>
                     <td className="text-center p-6">
                       <X className="w-5 h-5 text-destructive mx-auto" />
                     </td>
@@ -887,7 +887,7 @@ const Index = () => {
                     </td>
                   </tr>
                   <tr className="border-b border-border">
-                    <td className="p-6 text-foreground font-medium">Expert Consultation</td>
+                    <td className="p-6 text-foreground font-medium">Buyer Psychology & Negotiation Guide</td>
                     <td className="text-center p-6">
                       <X className="w-5 h-5 text-destructive mx-auto" />
                     </td>
@@ -899,7 +899,7 @@ const Index = () => {
                     </td>
                   </tr>
                   <tr className="border-b border-border">
-                    <td className="p-6 text-foreground font-medium">Legal Document Generator</td>
+                    <td className="p-6 text-foreground font-medium">Market Intelligence Handbook</td>
                     <td className="text-center p-6">
                       <X className="w-5 h-5 text-destructive mx-auto" />
                     </td>
@@ -911,7 +911,7 @@ const Index = () => {
                     </td>
                   </tr>
                   <tr className="border-b border-border">
-                    <td className="p-6 text-foreground font-medium">Market Trend Reports</td>
+                    <td className="p-6 text-foreground font-medium">50+ Premium Templates</td>
                     <td className="text-center p-6">
                       <X className="w-5 h-5 text-destructive mx-auto" />
                     </td>
@@ -923,7 +923,7 @@ const Index = () => {
                     </td>
                   </tr>
                   <tr className="border-b border-border">
-                    <td className="p-6 text-foreground font-medium">Fraud Protection Suite</td>
+                    <td className="p-6 text-foreground font-medium">Fraud Protection Guide</td>
                     <td className="text-center p-6">
                       <X className="w-5 h-5 text-destructive mx-auto" />
                     </td>
