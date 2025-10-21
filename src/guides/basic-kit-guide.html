@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CA Car Seller Kit - Basic Edition</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         @page {
             size: A4;
-            margin: 0.75in;
+            margin: 0.5in;
         }
         
         body {
@@ -16,124 +17,353 @@
             color: #333;
             margin: 0;
             padding: 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
         }
         
         .header {
-            background: linear-gradient(135deg, #0D2B3E 0%, #1E4A5F 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 30px;
+            padding: 40px;
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="white" opacity="0.1"/></svg>') repeat;
+            animation: float 20s infinite linear;
+        }
+        
+        @keyframes float {
+            0% { transform: translateX(-50px) translateY(-50px); }
+            100% { transform: translateX(50px) translateY(50px); }
         }
         
         .header h1 {
             margin: 0;
-            font-size: 2.5em;
-            font-weight: bold;
+            font-size: 3.5em;
+            font-weight: 900;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
         }
         
-        .header p {
-            margin: 10px 0 0 0;
-            font-size: 1.2em;
-            opacity: 0.9;
+        .header .subtitle {
+            margin: 15px 0 0 0;
+            font-size: 1.4em;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header .badge {
+            display: inline-block;
+            background: linear-gradient(45deg, #ff6b6b, #ffa500);
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-weight: bold;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(255,107,107,0.4);
+            position: relative;
+            z-index: 1;
         }
         
         .section {
-            margin-bottom: 40px;
+            margin-bottom: 50px;
             page-break-inside: avoid;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #f093fb, #f5576c);
         }
         
         .section h2 {
-            color: #0D2B3E;
-            border-bottom: 3px solid #4A9B8E;
-            padding-bottom: 10px;
-            font-size: 1.8em;
-            margin-bottom: 20px;
+            color: #2c3e50;
+            font-size: 2.2em;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            font-weight: 800;
+        }
+        
+        .section h2::before {
+            content: '';
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 50%;
+            margin-right: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2em;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(102,126,234,0.4);
         }
         
         .section h3 {
-            color: #1E4A5F;
-            font-size: 1.4em;
-            margin-top: 25px;
-            margin-bottom: 15px;
+            color: #34495e;
+            font-size: 1.6em;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+        }
+        
+        .section h3::before {
+            content: '';
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, #f093fb, #f5576c);
+            border-radius: 50%;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8em;
+            font-weight: bold;
+            box-shadow: 0 3px 10px rgba(240,147,251,0.4);
         }
         
         .feature-box {
-            background: #F8F9FA;
-            border-left: 4px solid #4A9B8E;
-            padding: 20px;
-            margin: 20px 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(102,126,234,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            transform: rotate(45deg);
         }
         
         .feature-box h4 {
-            color: #0D2B3E;
+            color: white;
             margin-top: 0;
+            font-size: 1.4em;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .feature-box h4::before {
+            content: '✨';
+            margin-right: 10px;
             font-size: 1.2em;
         }
         
         .checklist {
-            background: #E8F5E8;
-            border: 1px solid #4A9B8E;
-            padding: 20px;
-            margin: 15px 0;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(79,172,254,0.3);
+            position: relative;
         }
         
         .checklist h4 {
-            color: #0D2B3E;
+            color: white;
             margin-top: 0;
+            font-size: 1.3em;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+        
+        .checklist h4::before {
+            content: '✅';
+            margin-right: 10px;
+            font-size: 1.2em;
         }
         
         .checklist ul {
-            margin: 10px 0;
-            padding-left: 20px;
+            margin: 15px 0;
+            padding-left: 0;
+            list-style: none;
         }
         
         .checklist li {
-            margin: 8px 0;
+            margin: 12px 0;
+            padding-left: 30px;
+            position: relative;
+            font-weight: 500;
+        }
+        
+        .checklist li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9em;
         }
         
         .template-box {
-            background: #FFF3CD;
-            border: 1px solid #FFC107;
-            padding: 20px;
-            margin: 15px 0;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(252,182,159,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .template-box::before {
+            content: '📋';
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 2em;
+            opacity: 0.3;
         }
         
         .template-box h4 {
-            color: #856404;
+            color: #8b4513;
             margin-top: 0;
+            font-size: 1.3em;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+        
+        .template-box h4::before {
+            content: '📝';
+            margin-right: 10px;
+            font-size: 1.2em;
         }
         
         .warning-box {
-            background: #F8D7DA;
-            border: 1px solid #DC3545;
-            padding: 15px;
-            margin: 15px 0;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(255,154,158,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .warning-box::before {
+            content: '⚠️';
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 2em;
+            opacity: 0.3;
         }
         
         .warning-box h4 {
-            color: #721C24;
+            color: #8b0000;
             margin-top: 0;
+            font-size: 1.3em;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+        
+        .warning-box h4::before {
+            content: '🚨';
+            margin-right: 10px;
+            font-size: 1.2em;
         }
         
         .tip-box {
-            background: #D1ECF1;
-            border: 1px solid #17A2B8;
-            padding: 15px;
-            margin: 15px 0;
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(168,237,234,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tip-box::before {
+            content: '💡';
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 2em;
+            opacity: 0.3;
         }
         
         .tip-box h4 {
-            color: #0C5460;
+            color: #2c5530;
             margin-top: 0;
+            font-size: 1.3em;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+        
+        .tip-box h4::before {
+            content: '💡';
+            margin-right: 10px;
+            font-size: 1.2em;
         }
         
         .footer {
-            background: #0D2B3E;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 20px;
+            padding: 40px;
             text-align: center;
             margin-top: 50px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .footer h3 {
+            font-size: 2em;
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+        
+        .footer p {
+            font-size: 1.1em;
+            opacity: 0.9;
+            margin: 5px 0;
         }
         
         .page-break {
@@ -143,54 +373,123 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            margin: 20px 0;
+            margin: 25px 0;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
         
         th, td {
-            border: 1px solid #ddd;
-            padding: 12px;
+            padding: 15px;
             text-align: left;
+            border: none;
         }
         
         th {
-            background-color: #4A9B8E;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+        
+        tr:nth-child(even) {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+        
+        tr:nth-child(odd) {
+            background: white;
         }
         
         .highlight {
-            background-color: #FFF3CD;
-            padding: 2px 4px;
-            border-radius: 3px;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 4px 8px;
+            border-radius: 8px;
+            font-weight: 600;
+            color: #8b4513;
+        }
+        
+        .icon-large {
+            font-size: 3em;
+            margin: 20px 0;
+            text-align: center;
+            display: block;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(102,126,234,0.3);
+        }
+        
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: 900;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 1.1em;
+            opacity: 0.9;
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>CA Car Seller Kit</h1>
-        <p>Basic Edition - Essential Tools for Confident Car Selling in California</p>
+        <h1><i class="fas fa-car"></i> CA Car Seller Kit</h1>
+        <p class="subtitle">Basic Edition - Essential Tools for Confident Car Selling in California</p>
+        <div class="badge">🚗 Complete Guide Included</div>
     </div>
 
     <div class="section">
-        <h2>Welcome to Your California Car Selling Success</h2>
+        <h2><i class="fas fa-star"></i> Welcome to Your California Car Selling Success</h2>
         <p>Congratulations on taking the first step toward selling your car with confidence! This comprehensive guide is specifically designed for California sellers and includes everything you need to price, list, screen buyers, and complete your sale legally and safely.</p>
         
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">6</div>
+                <div class="stat-label">Essential Features</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">CA Compliant</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">2x</div>
+                <div class="stat-label">More Inquiries</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">$1,100+</div>
+                <div class="stat-label">Average Extra Profit</div>
+            </div>
+        </div>
+        
         <div class="feature-box">
-            <h4>What You'll Learn:</h4>
+            <h4><i class="fas fa-graduation-cap"></i> What You'll Learn:</h4>
             <ul>
-                <li>How to price your car for maximum profit</li>
-                <li>Create professional listings that attract serious buyers</li>
-                <li>Screen buyers effectively to avoid time-wasters</li>
-                <li>Conduct safe test drives and meetings</li>
-                <li>Handle negotiations like a pro</li>
-                <li>Complete all CA DMV paperwork correctly</li>
+                <li><i class="fas fa-dollar-sign"></i> How to price your car for maximum profit</li>
+                <li><i class="fas fa-camera"></i> Create professional listings that attract serious buyers</li>
+                <li><i class="fas fa-user-check"></i> Screen buyers effectively to avoid time-wasters</li>
+                <li><i class="fas fa-shield-alt"></i> Conduct safe test drives and meetings</li>
+                <li><i class="fas fa-handshake"></i> Handle negotiations like a pro</li>
+                <li><i class="fas fa-file-alt"></i> Complete all CA DMV paperwork correctly</li>
             </ul>
         </div>
     </div>
 
     <div class="section">
-        <h2>1. Pricing Guide & Worksheets</h2>
+        <h2><i class="fas fa-chart-line"></i> 1. Pricing Guide & Worksheets</h2>
         
-        <h3>Understanding Your Car's Value</h3>
+        <h3><i class="fas fa-calculator"></i> Understanding Your Car's Value</h3>
         <p>Pricing your car correctly is the most important factor in a successful sale. Price too high and you'll scare away buyers. Price too low and you'll leave money on the table.</p>
         
         <div class="checklist">
@@ -246,9 +545,9 @@
     </div>
 
     <div class="section page-break">
-        <h2>2. Photo & Listing Blueprint</h2>
+        <h2><i class="fas fa-camera"></i> 2. Photo & Listing Blueprint</h2>
         
-        <h3>Photography Essentials</h3>
+        <h3><i class="fas fa-images"></i> Photography Essentials</h3>
         <p>Great photos can make the difference between a car that sits for months and one that sells in days. Follow this blueprint for professional results.</p>
         
         <div class="checklist">
@@ -321,7 +620,7 @@
     </div>
 
     <div class="section">
-        <h2>3. Buyer Screening Scripts</h2>
+        <h2><i class="fas fa-user-check"></i> 3. Buyer Screening Scripts</h2>
         
         <p>Effective screening saves you time and helps you identify serious buyers. Use these scripts to filter out tire-kickers and time-wasters.</p>
         
@@ -362,7 +661,7 @@
     </div>
 
     <div class="section page-break">
-        <h2>4. Safe Test-Drive Protocol</h2>
+        <h2><i class="fas fa-shield-alt"></i> 4. Safe Test-Drive Protocol</h2>
         
         <p>Safety should be your top priority when meeting potential buyers. Follow this protocol to protect yourself and your property.</p>
         
@@ -416,7 +715,7 @@
     </div>
 
     <div class="section">
-        <h2>5. Offer & Negotiation Tactics</h2>
+        <h2><i class="fas fa-handshake"></i> 5. Offer & Negotiation Tactics</h2>
         
         <p>Negotiation is a skill that can save or cost you thousands of dollars. Use these tactics to get the best price while maintaining a positive relationship with the buyer.</p>
         
@@ -480,7 +779,7 @@
     </div>
 
     <div class="section page-break">
-        <h2>6. Closeout & DMV Paperwork</h2>
+        <h2><i class="fas fa-file-alt"></i> 6. Closeout & DMV Paperwork</h2>
         
         <p>Completing the sale properly protects you from future liability and ensures the buyer can register the car. Follow these steps exactly.</p>
         
@@ -620,9 +919,9 @@
     </div>
 
     <div class="footer">
-        <h3>CA Car Seller Kit - Basic Edition</h3>
-        <p>Everything you need to sell your car with confidence in California</p>
-        <p>© 2024 CA Car Seller Kit. All rights reserved.</p>
+        <h3><i class="fas fa-car"></i> CA Car Seller Kit - Basic Edition</h3>
+        <p><i class="fas fa-check-circle"></i> Everything you need to sell your car with confidence in California</p>
+        <p><i class="fas fa-copyright"></i> 2024 CA Car Seller Kit. All rights reserved.</p>
     </div>
 </body>
 </html>
