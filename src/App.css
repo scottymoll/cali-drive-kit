@@ -1,28 +1,27 @@
 .App {
   text-align: center;
-  background-color: #f0f0f0;
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 20px;
 }
 
-h1 {
-  color: #333;
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
 }
 
-p {
-  color: #666;
+.App-link {
+  color: #61dafb;
 }
 
-button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  border-radius: 5px;
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
 }
 
-button:hover {
-  background-color: #0056b3;
+@keyframes App-logo-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
