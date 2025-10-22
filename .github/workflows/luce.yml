@@ -11,23 +11,24 @@ jobs:
       contents: write
       issues: write
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
 
       - name: Install dependencies
-  working-directory: ./luce
-  run: npm ci || npm i
+        working-directory: ./luce
+        run: npm ci || npm i
 
-
-     - name: Run Luce Review
-  working-directory: ./luce
-  env:
-    OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-    PREVIEW_URL: ${{ secrets.PREVIEW_URL }}
-    GITHUB_REPOSITORY: ${{ github.repository }}
-    GITHUB_SHA: ${{ github.sha }}
-  run: npm run review
+      - name: Run Luce Review
+        working-directory: ./luce
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          PREVIEW_URL: ${{ secrets.PREVIEW_URL }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_SHA: ${{ github.sha }}
+        run: npm run review
 
