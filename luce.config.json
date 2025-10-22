@@ -1,0 +1,31 @@
+{
+  "project": "Your Project Name",
+  "targets": {
+    "rubricScore": 18,
+    "maxIterations": 12
+  },
+  "platforms": [
+    "Cursor"
+  ],
+  "rules": [
+    "no animation",
+    "mobile CLS<0.1",
+    "contrast>=4.5:1",
+    "headingMaxWidth<=12ch"
+  ],
+  "preview": {
+    "urlEnv": "PREVIEW_URL",
+    "paths": [
+      "/"
+    ]
+  },
+  "analysis": {
+    "runLighthouse": false,
+    "collectScreenshots": true
+  },
+  "output": {
+    "openIssueOnFail": true,
+    "createDeltaBranch": false,
+    "deltaBranchPrefix": "luce/delta-"
+  }
+}
