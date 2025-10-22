@@ -46,8 +46,10 @@ async function openaiReview() {
 
   const res = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
-    headers: { Authorization: `Bearer ${OPENAI_API_KEY}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify(body)
+    headers: {
+  Authorization: `Bearer ${OPENAI_API_KEY}`,
+  'Content-Type': 'application/json',
+  'OpenAI-Project': process.env.OPENAI_PROJECT
   });
 
   if (!res.ok) {
