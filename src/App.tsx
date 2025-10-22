@@ -2,20 +2,20 @@ import React from 'react';
 import './App.css';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import { Routes, Route } from 'react-router-dom';
 import Index from './pages/Index';
 import NotFound from './pages/NotFound';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-const App = () => {
+const App: React.FC = () => {
   return (
-    <div className="App">
+    <Router>
       <Header />
-      <Routes>
-        <Route path="/" element={<Index />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+      <Switch>
+        <Route exact path='/' component={Index} />
+        <Route path='*' component={NotFound} />
+      </Switch>
       <Footer />
-    </div>
+    </Router>
   );
 };
 
