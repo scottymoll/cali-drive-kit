@@ -1,4 +1,5 @@
 // Luce reviewer: opens a GitHub Issue with a Cursor delta prompt if under target
+import { applyCursorPrompt } from './apply.mjs';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
