@@ -29,6 +29,26 @@ jobs:
         working-directory: ./luce
         run: npm ci || npm i
 
+      - name: OpenAI key diagnostics
+        run: |
+          if [ -z "${OPENAI_API_KEY}" ]; then
+            echo "OPENAI_API_KEY is EMPTY"; exit 1;
+          fi
+          echo "Key length looks like: ${#OPENAI_API_KEY}"
+          # Probe the API (status only)
+          CODE=$(curl -s -o /dev/null -w "%{http_code}" https://api.openai.com/v1/models \
+            -H "Authorization: Bearer ${OPENAI_API_KEY}")
+          echo "OpenAI /models HTTP status: $CODE"
+          if [ "$CODE" = "429" ]; then
+            echo "OpenAI says 429 (quota)."; exit 2;
+          fi
+          if [ "$CODE" -ge 400 ]; then
+            echo "OpenAI error HTTP $CODE"; exit 3;
+          fi
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+
+
       - name: Run Luce Review (auto-apply)
         working-directory: ./luce
         env:
