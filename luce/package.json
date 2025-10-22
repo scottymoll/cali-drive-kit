@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "review": "node luce/review.mjs"
+    "review": "node review.mjs"
   },
   "dependencies": {
     "node-fetch": "^3.3.2"
