@@ -1,0 +1,11 @@
+{
+  "name": "luce-supervisor",
+  "version": "0.2.0",
+  "type": "module",
+  "scripts": {
+    "review": "node luce/review.mjs"
+  },
+  "dependencies": {
+    "node-fetch": "^3.3.2"
+  }
+}
