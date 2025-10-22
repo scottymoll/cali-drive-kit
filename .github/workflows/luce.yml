@@ -2,9 +2,14 @@ name: Luce Supervisor
 
 on:
   push:
-  pull_request:
+    branches:
+      - main
+    paths-ignore:
+      - 'README.md'
+      - '.github/**'
+      - 'luce/reviews/**'
   schedule:
-    - cron: '0 * * * *'  # every hour; adjust as you like
+    - cron: '0 * * * *' # every hour, less frequent
 
 jobs:
   review:
