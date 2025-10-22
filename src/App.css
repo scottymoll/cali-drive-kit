@@ -6,23 +6,21 @@
   padding: 20px;
 }
 
-h1 {
-  color: #333;
-}
-
-p {
-  color: #666;
-}
-
-button {
-  background-color: #007bff;
+.header {
+  background-color: #282c34;
+  padding: 20px;
   color: white;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  border-radius: 5px;
 }
 
-button:hover {
-  background-color: #0056b3;
+.footer {
+  background-color: #282c34;
+  padding: 10px;
+  color: white;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.main {
+  padding: 20px;
 }
