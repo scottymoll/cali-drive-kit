@@ -1,18 +1,14 @@
 import React from 'react';
 import './App.css';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import Index from './pages/Index';
-import NotFound from './pages/NotFound';
+import { Header } from './components/Header';
+import { Footer } from './components/Footer';
+import { Index } from './pages/Index';
 
-const App: React.FC = () => {
+const App = () => {
   return (
     <div className="App">
       <Header />
-      <main>
-        <Index />
-        <NotFound />
-      </main>
+      <Index />
       <Footer />
     </div>
   );
