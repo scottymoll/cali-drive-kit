@@ -6,7 +6,7 @@ import { Routes, Route } from 'react-router-dom';
 import Index from './pages/Index';
 import NotFound from './pages/NotFound';
 
-const App: React.FC = () => {
+const App = () => {
   return (
     <div className="App">
       <Header />
