@@ -8,27 +8,23 @@ jobs:
   review:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      issues: write
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+  contents: write
+  issues: write
+  pull-requests: write
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
+steps:
+  - name: Checkout
+    uses: actions/checkout@v4
+    with:
+      token: ${{ secrets.LUCE_PAT }}   # allows pushing branches
 
-      - name: Install dependencies
-        working-directory: ./luce
-        run: npm ci || npm i
-
-      - name: Run Luce Review
-        working-directory: ./luce
-        env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          PREVIEW_URL: ${{ secrets.PREVIEW_URL }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          GITHUB_SHA: ${{ github.sha }}
-        run: npm run review
+  - name: Run Luce Review (auto-apply)
+    working-directory: ./luce
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      PREVIEW_URL: ${{ secrets.PREVIEW_URL }}
+      GITHUB_REPOSITORY: ${{ github.repository }}
+      GITHUB_SHA: ${{ github.sha }}
+      GITHUB_TOKEN: ${{ secrets.LUCE_PAT }}   # used by API calls to open PRs
+    run: npm run review
 
