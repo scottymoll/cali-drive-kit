@@ -1,31 +1,25 @@
-/* App.css - Styles for the main application */
-
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
+.App {
+  text-align: center;
+  background-color: #f0f0f0;
+  font-family: 'Arial', sans-serif;
 }
 
-h1, h2, h3, h4, h5, h6 {
-    color: #333;
+.App-header {
+  background-color: #282c34;
+  padding: 20px;
+  color: white;
 }
 
-.container {
-    max-width: 1200px;
-    margin: auto;
-    padding: 20px;
+.App-link {
+  color: #61dafb;
 }
 
-.button {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+h1 {
+  font-size: 2.5rem;
+  margin: 20px 0;
 }
 
-.button:hover {
-    background-color: #0056b3;
+p {
+  font-size: 1.2rem;
+  line-height: 1.5;
 }
