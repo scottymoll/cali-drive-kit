@@ -4,17 +4,18 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import Index from './pages/Index';
 import NotFound from './pages/NotFound';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 const App: React.FC = () => {
   return (
-    <div className="App">
+    <Router>
       <Header />
-      <main>
-        <Index />
-        <NotFound />
-      </main>
+      <Switch>
+        <Route exact path='/' component={Index} />
+        <Route path='*' component={NotFound} />
+      </Switch>
       <Footer />
-    </div>
+    </Router>
   );
 };
 
