@@ -1,10 +1,9 @@
 import React from 'react';
-import { FeatureCard } from '../components/FeatureCard';
-import { Footer } from '../components/Footer';
 import { Header } from '../components/Header';
-import './Index.css';
+import { Footer } from '../components/Footer';
+import { FeatureCard } from '../components/FeatureCard';
 
-const Index: React.FC = () => {
+const Index = () => {
     return (
         <div>
             <Header />
