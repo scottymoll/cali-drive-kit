@@ -1,4 +1,4 @@
-// Luce apply: convert Cursor-style prompt into a diff, apply, and open a PR
+// Luce apply: convert Cursor-style prompt into a diff, apply robustly, and open a PR
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -28,23 +28,26 @@ function listFiles(globs = []) {
 
 async function makePatch(cursorPrompt, fileList) {
   const sys = [
-    'Output ONLY a git unified diff patch (no prose).',
+    'You MUST output ONLY a valid git unified diff patch (no prose).',
+    'Start each change with: diff --git PATH PATH',
+    'Use repo-root relative paths (e.g., src/file.tsx).',
+    'Do NOT include a/ or b/ prefixes.',
     'Patch must apply with: git apply -p0 --reject --whitespace=fix',
-    'Edit only allowed files; keep changes minimal and self-contained.'
+    'Edit only existing files within the allowlist; keep changes minimal and self-contained.',
   ].join(' ');
 
   const user = [
-    'Repo files (subset, paths relative to repo root):',
+    'Allowed repo files (subset); paths are relative to repo root:',
     '```',
     fileList,
     '```',
     '',
-    'Delta request (Cursor-style):',
+    'Delta request (Cursor-style instructions):',
     '```',
     cursorPrompt,
     '```',
     '',
-    'Produce a single unified diff from repo root.'
+    'Produce a SINGLE unified diff patch from repo root. No commentary, only the patch.'
   ].join('\n');
 
   const res = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -53,7 +56,10 @@ async function makePatch(cursorPrompt, fileList) {
     body: JSON.stringify({
       model: 'gpt-4o-mini',
       temperature: 0.2,
-      messages: [{ role: 'system', content: sys }, { role: 'user', content: user }]
+      messages: [
+        { role: 'system', content: sys },
+        { role: 'user', content: user }
+      ]
     })
   });
   if (!res.ok) throw new Error(await res.text());
@@ -63,10 +69,33 @@ async function makePatch(cursorPrompt, fileList) {
   return patch;
 }
 
+function tryApplyPatch(patchPath) {
+  // Try multiple strategies: -p0, then -p1 (for a/b prefixes), then 3-way
+  const attempts = [
+    { name: 'apply -p0', cmd: `git apply -p0 --reject --whitespace=fix "${patchPath}"` },
+    { name: 'apply -p1', cmd: `git apply -p1 --reject --whitespace=fix "${patchPath}"` },
+    { name: 'apply --3way', cmd: `git apply --3way --whitespace=fix "${patchPath}"` }
+  ];
+
+  for (const a of attempts) {
+    try {
+      sh(a.cmd, { cwd: ROOT });
+      return { ok: true, method: a.name };
+    } catch (e) {
+      // write a short log for each failure, continue to next attempt
+      console.error(`Patch ${a.name} failed: ${e.message.split('\n')[0]}`);
+    }
+  }
+  return { ok: false };
+}
+
 async function openPR(branch, title, body) {
   const res = await fetch(`https://api.github.com/repos/${REPO}/pulls`, {
     method: 'POST',
-    headers: { Authorization: `Bearer ${GITHUB_TOKEN}`, Accept: 'application/vnd.github+json' },
+    headers: {
+      Authorization: `Bearer ${GITHUB_TOKEN}`,
+      Accept: 'application/vnd.github+json'
+    },
     body: JSON.stringify({
       title,
       head: branch,
@@ -84,18 +113,25 @@ export async function applyCursorPrompt(cursorPrompt) {
   const files = listFiles(allow);
   const branch = `${cfg.output?.deltaBranchPrefix || 'luce/delta-'}${Date.now()}`;
 
-  // Make/Apply patch
+  // Generate diff
   const patch = await makePatch(cursorPrompt, files);
+
+  // New branch
   sh(`git checkout -b "${branch}"`, { cwd: ROOT });
+
+  // Save patch for debugging
   const patchPath = path.join(__dirname, 'artifacts.patch');
   fs.writeFileSync(patchPath, patch);
-  try {
-    sh(`git apply -p0 --reject --whitespace=fix "${patchPath}"`, { cwd: ROOT });
-  } catch {
-    throw new Error('Patch failed to apply cleanly. Not opening PR.');
-  }
 
-  // (Optional) build/tests gate — uncomment when ready:
+  // Apply with resilient strategy
+  const result = tryApplyPatch(patchPath);
+  if (!result.ok) {
+    // Keep branch so you can inspect; fail back to issue in review.mjs
+    throw new Error('Patch failed to apply cleanly after multiple strategies.');
+  }
+  console.log(`Patch applied using method: ${result.method}`);
+
+  // Optional: build/tests gate — uncomment when ready
   // if (fs.existsSync(path.join(ROOT, 'package.json'))) {
   //   sh(`npm ci`, { cwd: ROOT });
   //   // sh(`npm run build`, { cwd: ROOT });
@@ -105,9 +141,16 @@ export async function applyCursorPrompt(cursorPrompt) {
   // Commit & push only allowed paths
   const addTargets = allow.length ? allow.join(' ') : '.';
   sh(`git add ${addTargets}`, { cwd: ROOT });
-  sh(`git -c user.name="luce-bot" -c user.email="luce-bot@users.noreply.github.com" commit -m "feat(luce): auto delta"`, { cwd: ROOT });
+  // In case new files were added within allowed paths, add them:
+  sh(`git add -A`, { cwd: ROOT });
+
+  sh(
+    `git -c user.name="luce-bot" -c user.email="luce-bot@users.noreply.github.com" commit -m "feat(luce): auto delta"`,
+    { cwd: ROOT }
+  );
   sh(`git push --set-upstream origin "${branch}"`, { cwd: ROOT });
 
+  // Open PR
   const url = await openPR(branch, 'Luce auto-delta', `Auto changes from Luce.\n\nSource commit: \`${SHA}\``);
   console.log('Opened PR:', url);
 }
