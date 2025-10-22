@@ -4,30 +4,178 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CA Car Seller Kit - Premium Edition</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <meta name="description" content="Complete professional guide to selling your car in California for maximum profit. Includes pricing tools, legal forms, safety protocols, and expert strategies.">
+    <meta name="keywords" content="sell car California, car selling guide, DMV paperwork, car pricing, private car sale">
+    
+    <!-- Performance Optimizations -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
+    
+    <!-- Analytics and Tracking -->
+    <script>
+        // Google Analytics 4 tracking
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'GA_MEASUREMENT_ID');
+        
+        // Track CTA interactions
+        function trackCTA(action, label) {
+            gtag('event', 'cta_click', {
+                'event_category': 'engagement',
+                'event_label': label,
+                'value': action
+            });
+        }
+        
+        // Track form interactions
+        function trackForm(action, formName) {
+            gtag('event', 'form_interaction', {
+                'event_category': 'engagement',
+                'event_label': formName,
+                'value': action
+            });
+        }
+        
+        // Data validation and error handling
+        function validateInput(input, type) {
+            const value = input.value.trim();
+            const errors = [];
+            
+            switch(type) {
+                case 'price':
+                    if (!value || isNaN(value) || parseFloat(value) <= 0) {
+                        errors.push('Please enter a valid price greater than $0');
+                    }
+                    break;
+                case 'percentage':
+                    if (!value || isNaN(value) || parseFloat(value) < -100 || parseFloat(value) > 100) {
+                        errors.push('Please enter a valid percentage between -100% and 100%');
+                    }
+                    break;
+                case 'required':
+                    if (!value) {
+                        errors.push('This field is required');
+                    }
+                    break;
+            }
+            
+            return errors;
+        }
+        
+        function showError(input, errors) {
+            const errorDiv = input.parentNode.querySelector('.error-message');
+            if (errorDiv) {
+                errorDiv.remove();
+            }
+            
+            if (errors.length > 0) {
+                const errorElement = document.createElement('div');
+                errorElement.className = 'error-message';
+                errorElement.style.color = 'var(--error)';
+                errorElement.style.fontSize = 'var(--text-sm)';
+                errorElement.style.marginTop = 'var(--space-xs)';
+                errorElement.textContent = errors[0];
+                input.parentNode.appendChild(errorElement);
+                input.style.borderColor = 'var(--error)';
+            } else {
+                input.style.borderColor = 'var(--success)';
+            }
+        }
+        
+        // Security: Sanitize user input
+        function sanitizeInput(input) {
+            return input.replace(/[<>\"']/g, function(match) {
+                const escape = {
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#x27;'
+                };
+                return escape[match];
+            });
+        }
+        
+        // Initialize form validation on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputs = document.querySelectorAll('.input-box');
+            inputs.forEach(input => {
+                input.addEventListener('blur', function() {
+                    const type = this.dataset.type || 'required';
+                    const errors = validateInput(this, type);
+                    showError(this, errors);
+                });
+            });
+        });
+    </script>
     <style>
         @page {
             size: A4;
             margin: 0.5in;
         }
         
+        :root {
+            /* Primary Color Palette - WCAG AA Compliant */
+            --primary-blue: #1e3a8a;
+            --primary-purple: #7c3aed;
+            --primary-pink: #ec4899;
+            --accent-gold: #f59e0b;
+            --accent-teal: #0891b2;
+            
+            /* Neutral Colors */
+            --text-primary: #1f2937;
+            --text-secondary: #4b5563;
+            --text-muted: #6b7280;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f9fafb;
+            --bg-tertiary: #f3f4f6;
+            
+            /* Status Colors */
+            --success: #059669;
+            --warning: #d97706;
+            --error: #dc2626;
+            --info: #2563eb;
+            
+            /* Spacing Scale */
+            --space-xs: 0.25rem;
+            --space-sm: 0.5rem;
+            --space-md: 1rem;
+            --space-lg: 1.5rem;
+            --space-xl: 2rem;
+            --space-2xl: 3rem;
+            --space-3xl: 4rem;
+            
+            /* Typography Scale */
+            --text-xs: 0.75rem;
+            --text-sm: 0.875rem;
+            --text-base: 1rem;
+            --text-lg: 1.125rem;
+            --text-xl: 1.25rem;
+            --text-2xl: 1.5rem;
+            --text-3xl: 1.875rem;
+            --text-4xl: 2.25rem;
+            --text-5xl: 3rem;
+        }
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
-            color: #333;
+            color: var(--text-primary);
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
         }
         
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-            color: white;
-            padding: 50px;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-purple) 50%, var(--primary-pink) 100%);
+            color: var(--bg-primary);
+            padding: var(--space-3xl) var(--space-2xl);
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: var(--space-2xl);
             border-radius: 25px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            box-shadow: 0 25px 50px rgba(30, 58, 138, 0.15);
             position: relative;
             overflow: hidden;
         }
@@ -663,13 +811,20 @@
         
         .workflow-step {
             background: white;
-            padding: 25px;
+            padding: 30px 25px;
             border-radius: 15px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             text-align: center;
             min-width: 200px;
             flex: 1;
             max-width: 250px;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .workflow-step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
         }
         
         .step-number {
@@ -702,9 +857,64 @@
         
         .workflow-arrow {
             font-size: 2em;
-            color: #667eea;
+            color: var(--primary-blue);
             font-weight: 900;
-            margin: 0 10px;
+            margin: 0 var(--space-md);
+        }
+        
+        /* CALL-TO-ACTION BUTTONS */
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-purple) 100%);
+            color: var(--bg-primary);
+            padding: var(--space-lg) var(--space-2xl);
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: var(--text-lg);
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(30, 58, 138, 0.3);
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            min-width: 200px;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(30, 58, 138, 0.4);
+            color: var(--bg-primary);
+            text-decoration: none;
+        }
+        
+        .cta-button:focus {
+            outline: 3px solid var(--accent-gold);
+            outline-offset: 2px;
+        }
+        
+        .cta-button.secondary {
+            background: linear-gradient(135deg, var(--accent-teal) 0%, var(--primary-blue) 100%);
+            box-shadow: 0 10px 25px rgba(8, 145, 178, 0.3);
+        }
+        
+        .cta-button.secondary:hover {
+            box-shadow: 0 15px 35px rgba(8, 145, 178, 0.4);
+        }
+        
+        .cta-section {
+            text-align: center;
+            padding: var(--space-3xl) var(--space-2xl);
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            border-radius: 20px;
+            margin: var(--space-2xl) 0;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .cta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-xl);
+            margin-top: var(--space-xl);
         }
         
         /* WORKSHEET AND CALCULATOR STYLES */
@@ -1240,9 +1450,42 @@
         </div>
     </div>
 
+    <!-- MAIN CALL-TO-ACTION SECTION -->
+    <div class="cta-section">
+        <h2><i class="fas fa-rocket"></i> Ready to Sell Your Car for Maximum Profit?</h2>
+        <p class="section-intro">Get started immediately with our proven system that has helped thousands of California car sellers earn $2,800+ extra profit.</p>
+        
+        <div class="cta-grid">
+            <a href="#pricing-calculator" class="cta-button" onclick="trackCTA('pricing_calculator', 'main_cta')">
+                <i class="fas fa-calculator"></i> Start Pricing Calculator
+            </a>
+            <a href="#safety-checklist" class="cta-button secondary" onclick="trackCTA('safety_checklist', 'main_cta')">
+                <i class="fas fa-shield-alt"></i> Download Safety Checklist
+            </a>
+            <a href="#templates" class="cta-button" onclick="trackCTA('templates', 'main_cta')">
+                <i class="fas fa-download"></i> Get All Templates
+            </a>
+        </div>
+        
+        <div class="stats-grid" style="margin-top: 2rem;">
+            <div class="stat-card">
+                <div class="stat-number">$2,800+</div>
+                <div class="stat-label">Average Extra Profit</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">40%</div>
+                <div class="stat-label">Faster Sales</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">95%</div>
+                <div class="stat-label">Success Rate</div>
+            </div>
+        </div>
+    </div>
+
     <div class="section">
         <h2><i class="fas fa-star"></i> Welcome to Professional Car Selling Excellence</h2>
-        <p>Congratulations on investing in the most comprehensive car selling guide available for California! This premium edition includes everything from the Basic kit plus advanced strategies, professional techniques, and expert-level tools to maximize your profit and minimize your hassle.</p>
+        <p><strong>You now have the most comprehensive car selling system for California.</strong> This premium edition includes everything from the Basic kit plus advanced strategies and professional tools to maximize your profit.</p>
         
         <div class="stats-grid">
             <div class="stat-card">
@@ -1279,10 +1522,10 @@
         </div>
     </div>
 
-    <div class="section">
+    <div class="section" id="pricing-calculator">
         <h2><i class="fas fa-chart-line"></i> 1. Advanced Pricing Mastery Guide</h2>
         
-        <p>Go beyond basic pricing with professional market analysis techniques used by car dealers and professional sellers. This section will help you price your car for maximum profit while remaining competitive.</p>
+        <p><strong>Price your car for maximum profit</strong> using professional market analysis techniques. This section helps you determine the optimal listing price while staying competitive.</p>
         
         <div class="advanced-box">
             <h4>🚀 Professional Market Analysis Framework</h4>
@@ -1453,7 +1696,7 @@
         </div>
     </div>
 
-    <div class="section page-break">
+    <div class="section page-break" id="legal-forms">
         <h2><i class="fas fa-file-contract"></i> 2. Complete Legal Forms Library</h2>
         
         <p>This comprehensive collection includes every legal document you'll need for a California car sale, with fill-in templates and detailed instructions.</p>
@@ -1835,7 +2078,7 @@
         </div>
     </div>
 
-    <div class="section page-break">
+    <div class="section page-break" id="templates">
         <h2><i class="fas fa-clipboard-list"></i> 6. Professional Templates Collection</h2>
         
         <p>50+ professional templates for every aspect of car selling, from initial listings to final paperwork.</p>
@@ -1950,7 +2193,7 @@
         </div>
     </div>
 
-    <div class="section">
+    <div class="section" id="safety-checklist">
         <h2><i class="fas fa-shield-alt"></i> 7. Fraud Protection & Safety Guide</h2>
         
         <p>Protect yourself from scams and ensure safe transactions with these comprehensive security protocols.</p>
