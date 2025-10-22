@@ -3,28 +3,38 @@ name: Luce Supervisor
 on:
   push:
   pull_request:
+  schedule:
+    - cron: '0 * * * *'  # every hour; adjust as you like
 
 jobs:
   review:
     runs-on: ubuntu-latest
     permissions:
-  contents: write
-  issues: write
-  pull-requests: write
+      contents: write
+      issues: write
+      pull-requests: write
 
-steps:
-  - name: Checkout
-    uses: actions/checkout@v4
-    with:
-      token: ${{ secrets.LUCE_PAT }}   # allows pushing branches
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.LUCE_PAT }} # PAT so we can push branches/open PRs
 
-  - name: Run Luce Review (auto-apply)
-    working-directory: ./luce
-    env:
-      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-      PREVIEW_URL: ${{ secrets.PREVIEW_URL }}
-      GITHUB_REPOSITORY: ${{ github.repository }}
-      GITHUB_SHA: ${{ github.sha }}
-      GITHUB_TOKEN: ${{ secrets.LUCE_PAT }}   # used by API calls to open PRs
-    run: npm run review
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
+      - name: Install deps (Luce)
+        working-directory: ./luce
+        run: npm ci || npm i
+
+      - name: Run Luce Review (auto-apply)
+        working-directory: ./luce
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          PREVIEW_URL: ${{ secrets.PREVIEW_URL }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_SHA: ${{ github.sha }}
+          GITHUB_TOKEN: ${{ secrets.LUCE_PAT }}  # used by API calls/PRs
+        run: npm run review
