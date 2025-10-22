@@ -1,15 +1,34 @@
 .App {
   text-align: center;
   background-color: #f0f0f0;
-  font-family: 'Arial', sans-serif;
+  font-family: Arial, sans-serif;
 }
 
-.App-header {
+.header {
   background-color: #282c34;
   padding: 20px;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.footer {
+  background-color: #282c34;
+  padding: 10px;
+  color: white;
+}
+
+.main {
+  padding: 20px;
+}
+
+.button {
+  background-color: #61dafb;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #21a1f1;
 }
