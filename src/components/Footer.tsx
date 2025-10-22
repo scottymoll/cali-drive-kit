@@ -1,13 +1,17 @@
 import React from 'react';
 import './Footer.css';
 
-const Footer = () => {
+const Footer: React.FC = () => {
     return (
         <footer className="footer">
             <div className="footer-content">
-                <p>© 2023 Your Company. All rights reserved.</p>
-                <a href="/privacy-policy">Privacy Policy</a>
-                <a href="/terms-of-service">Terms of Service</a>
+                <p>&copy; {new Date().getFullYear()} Your Company. All rights reserved.</p>
+                <nav>
+                    <ul>
+                        <li><a href="/privacy">Privacy Policy</a></li>
+                        <li><a href="/terms">Terms of Service</a></li>
+                    </ul>
+                </nav>
             </div>
         </footer>
     );
