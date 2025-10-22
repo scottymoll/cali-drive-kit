@@ -29,8 +29,8 @@ const payload = { previewUrl: PREVIEW_URL, config: cfg, commit: SHA };
 // Call OpenAI to get a structured review with a Cursor delta prompt
 async function openaiReview() {
   const body = {
-    model: 'gpt-4o-mini',
-    response_format: { type: 'json_object' },
+  model: 'gpt-4o-mini',
+  response_format: { type: 'json_object' },
     temperature: 0.2,
     messages: [
       {
