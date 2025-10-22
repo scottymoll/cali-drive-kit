@@ -1,25 +1,30 @@
 .App {
   text-align: center;
   background-color: #f0f0f0;
-  font-family: Arial, sans-serif;
+  font-family: 'Arial', sans-serif;
 }
 
-header {
-  background: #282c34;
+.header {
+  background-color: #282c34;
   padding: 20px;
   color: white;
 }
 
-footer {
-  background: #282c34;
+.footer {
+  background-color: #282c34;
   padding: 10px;
   color: white;
 }
 
-h1 {
-  font-size: 2.5em;
+.button {
+  background-color: #61dafb;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  padding: 10px 20px;
+  cursor: pointer;
 }
 
-p {
-  font-size: 1.2em;
+.button:hover {
+  background-color: #21a1f1;
 }
