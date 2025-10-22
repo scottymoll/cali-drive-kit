@@ -23,20 +23,20 @@ const SHA = process.env.GITHUB_SHA;
 const rubric = fs.readFileSync(RUBRIC_PATH, 'utf8');
 const cfg = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8'));
 
-// Build the review payload
-const payload = { previewUrl: PREVIEW_URL, config: cfg, commit: SHA };
+// Minimal, safe payload to reduce token usage
+const payload = { previewUrl: PREVIEW_URL };
 
 // Call OpenAI to get a structured review with a Cursor delta prompt
 async function openaiReview() {
   const body = {
-  model: 'gpt-4o-mini',
-  response_format: { type: 'json_object' },
+    model: 'gpt-4o-mini',
+    response_format: { type: 'json_object' },
     temperature: 0.2,
     messages: [
       {
         role: 'system',
         content:
-          'You are Luce, an exacting web supervisor. Output strict JSON ONLY with fields: ' +
+          'You are Luce, an exacting web supervisor. Output STRICT JSON only: ' +
           '{"score":number,"findings":string[],"requiredFixes":string[],"cursorPrompt":string,"stop":boolean}'
       },
       { role: 'user', content: JSON.stringify(payload) },
@@ -47,9 +47,10 @@ async function openaiReview() {
   const res = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
     headers: {
-  Authorization: `Bearer ${OPENAI_API_KEY}`,
-  'Content-Type': 'application/json',
-  'OpenAI-Project': process.env.OPENAI_PROJECT
+      Authorization: `Bearer ${OPENAI_API_KEY}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
   });
 
   if (!res.ok) {
@@ -59,7 +60,6 @@ async function openaiReview() {
 
   const data = await res.json();
   const content = data?.choices?.[0]?.message?.content || '{}';
-
   try {
     return JSON.parse(content);
   } catch {
@@ -117,7 +117,6 @@ async function createIssue(score, findings, requiredFixes, cursorPrompt) {
   const target = cfg.targets?.rubricScore ?? 18;
   const score = Number.isFinite(review?.score) ? review.score : 0;
 
-  // Force iteration under target
   const shouldStop = review?.stop === true || score >= target;
   if (shouldStop) {
     console.log(`Target met (score=${score} >= ${target}) or stop=true. Not opening an issue.`);
@@ -129,4 +128,3 @@ async function createIssue(score, findings, requiredFixes, cursorPrompt) {
   console.error(err);
   process.exit(1);
 });
-
