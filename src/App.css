@@ -1,7 +1,8 @@
 .App {
   text-align: center;
   background-color: #f0f0f0;
-  font-family: Arial, sans-serif;
+  font-family: 'Arial', sans-serif;
+  color: #333;
 }
 
 .header {
@@ -14,8 +15,21 @@
   background-color: #282c34;
   padding: 10px;
   color: white;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
 }
 
-.main {
-  padding: 20px;
+.button {
+  background-color: #61dafb;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.button:hover {
+  background-color: #21a1f1;
 }
