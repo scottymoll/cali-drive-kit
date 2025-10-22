@@ -1,16 +1,22 @@
 import React from 'react';
-import { FeatureCard } from '../components/FeatureCard';
-import { Footer } from '../components/Footer';
 import { Header } from '../components/Header';
+import { Footer } from '../components/Footer';
+import { FeatureCard } from '../components/FeatureCard';
+import { TestimonialCard } from '../components/TestimonialCard';
+import './Index.css';
 
-const Index: React.FC = () => {
+const Index = () => {
     return (
         <div>
             <Header />
             <main>
-                <h1>Welcome to Our Site</h1>
-                <p>Please review the findings and required fixes to improve the site.</p>
-                <FeatureCard />
+                <h1>Welcome to Our Website</h1>
+                <section className="features">
+                    <FeatureCard />
+                </section>
+                <section className="testimonials">
+                    <TestimonialCard />
+                </section>
             </main>
             <Footer />
         </div>
