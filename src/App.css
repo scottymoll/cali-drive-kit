@@ -2,14 +2,20 @@
   text-align: center;
   background-color: #f0f0f0;
   font-family: Arial, sans-serif;
-  margin: 0;
+}
+
+.header {
+  background-color: #282c34;
   padding: 20px;
+  color: white;
 }
 
-h1 {
-  color: #333;
+.footer {
+  background-color: #282c34;
+  padding: 10px;
+  color: white;
 }
 
-p {
-  color: #666;
+.main {
+  padding: 20px;
 }
