@@ -48,6 +48,19 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
+      - name: OpenAI chat-completions smoke test
+        run: |
+          JSON='{"model":"gpt-4o-mini","messages":[{"role":"user","content":"ping"}]}'
+          CODE=$(curl -s -o /tmp/resp.json -w "%{http_code}" https://api.openai.com/v1/chat/completions \
+            -H "Authorization: Bearer ${OPENAI_API_KEY}" \
+            -H "Content-Type: application/json" \
+            -d "$JSON")
+          echo "Chat /v1/chat/completions HTTP status: $CODE"
+          tail -c 500 /tmp/resp.json || true
+          test "$CODE" -lt 400
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+
 
       - name: Run Luce Review (auto-apply)
         working-directory: ./luce
