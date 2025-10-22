@@ -1,8 +1,8 @@
 {
   "project": "Your Project Name",
   "targets": {
-    "rubricScore": 18,
-    "maxIterations": 12
+    "rubricScore": 20,
+    "maxIterations": 20
   },
   "platforms": [
     "Cursor"
