@@ -1,23 +1,25 @@
 {
-  "project": "Your Project Name",
+  "project": "Cali Drive Kit",
   "targets": {
     "rubricScore": 20,
-    "maxIterations": 20
+    "maxIterations": 50
   },
-  "platforms": [
-    "Cursor"
-  ],
+  "platforms": ["Cursor"],
   "rules": [
-    "no animation",
-    "mobile CLS<0.1",
-    "contrast>=4.5:1",
-    "headingMaxWidth<=12ch"
+    "All pages must load cleanly on desktop and mobile with no console errors.",
+    "Page content must align with the Cali Drive Kit branding and professional tone.",
+    "Typography must maintain a consistent hierarchy (H1, H2, H3) and spacing rhythm.",
+    "Hero sections should use responsive background images with 4.5:1 contrast or better.",
+    "Buttons, inputs, and forms must include hover, focus, and active states.",
+    "Mobile CLS (Cumulative Layout Shift) must be below 0.1.",
+    "No placeholder or lorem text should remain anywhere.",
+    "Forms must validate input and display inline error/success messages.",
+    "Generated guides or documents must be well-structured, readable, and formatted for print (page breaks, section headers, consistent tone).",
+    "Any downloadable assets (PDFs, docs) must render correctly without text overflow or missing images."
   ],
   "preview": {
     "urlEnv": "PREVIEW_URL",
-    "paths": [
-      "/"
-    ]
+    "paths": ["/"]
   },
   "analysis": {
     "runLighthouse": false,
@@ -25,7 +27,16 @@
   },
   "output": {
     "openIssueOnFail": true,
-    "createDeltaBranch": false,
-    "deltaBranchPrefix": "luce/delta-"
+    "createDeltaBranch": true,
+    "autoApply": true,
+    "deltaBranchPrefix": "luce/delta-",
+    "allowPaths": [
+      "app/**",
+      "pages/**",
+      "src/**",
+      "components/**",
+      "public/**",
+      "styles/**"
+    ]
   }
 }
