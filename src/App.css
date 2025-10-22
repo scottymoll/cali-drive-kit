@@ -1,15 +1,19 @@
 .App {
   text-align: center;
-  background-color: #f0f0f0;
-  font-family: 'Arial', sans-serif;
 }
 
-.App-header {
-  background-color: #282c34;
-  padding: 20px;
-  color: white;
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
 }
 
 .App-link {
   color: #61dafb;
+}
+
+@media (prefers-color-scheme: dark) {
+  .App {
+    background-color: #282c34;
+    color: white;
+  }
 }
