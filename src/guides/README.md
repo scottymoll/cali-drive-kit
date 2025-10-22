@@ -1,77 +1,21 @@
-# CA Car Seller Kit - PDF Generation
+# Performance Metrics and Accessibility Checks
 
-This directory contains the complete guides for both the Basic and Premium editions of the CA Car Seller Kit.
+## Performance Metrics
 
-## Files Included
+To ensure optimal performance of the site, we monitor the following key metrics:
 
-### HTML Guides
-- `basic-kit-guide.html` - Complete Basic Kit guide (6 features)
-- `premium-kit-guide.html` - Complete Premium Kit guide (12 features)
+1. **First Contentful Paint (FCP)**: Measures the time taken for the first piece of content to be rendered on the screen.
+2. **Time to Interactive (TTI)**: The time it takes for the page to become fully interactive.
+3. **Speed Index**: A score that indicates how quickly the contents of a page are visibly populated.
+4. **Largest Contentful Paint (LCP)**: Measures the loading performance of the largest image or text block visible within the viewport.
+5. **Cumulative Layout Shift (CLS)**: A metric that measures visual stability, indicating how much the layout shifts during the loading phase.
 
-### PDF Generation
-- `generate-pdfs.js` - Script to convert HTML to PDF
-- `package.json` - Dependencies for PDF generation
+## Accessibility Checks
 
-## How to Generate PDFs
+Accessibility is crucial for ensuring that all users, including those with disabilities, can navigate and interact with the site. We perform the following checks:
 
-### Prerequisites
-- Node.js installed on your system
-- Internet connection (for downloading Puppeteer)
-
-### Steps
-
-1. **Install Dependencies**
-   ```bash
-   cd src/guides
-   npm install
-   ```
-
-2. **Generate PDFs**
-   ```bash
-   npm run generate
-   ```
-
-3. **Output Files**
-   - `CA-Car-Seller-Kit-Basic-Edition.pdf`
-   - `CA-Car-Seller-Kit-Premium-Edition.pdf`
-
-## Guide Contents
-
-### Basic Kit (6 Features)
-1. Pricing Guide & Worksheets
-2. Photo & Listing Blueprint
-3. Buyer Screening Scripts
-4. Safe Test-Drive Protocol
-5. Offer & Negotiation Tactics
-6. Closeout & DMV Paperwork
-
-### Premium Kit (12 Features)
-1. Advanced Pricing Mastery Guide
-2. Complete Legal Forms Library
-3. Profit Optimization Worksheets
-4. Buyer Psychology & Negotiation Guide
-5. Market Intelligence Handbook
-6. Professional Templates Collection
-7. Fraud Protection & Safety Guide
-8. Professional Photography Guide
-9. Advanced Communication Scripts
-10. Complete Safety Protocol Guide
-11. DMV & Paperwork Master Guide
-12. Lifetime Access & Updates
-
-## Features
-
-- **Professional Design**: Clean, modern layout with proper branding
-- **Comprehensive Content**: Everything needed to sell a car in California
-- **Templates & Forms**: Ready-to-use documents and scripts
-- **Step-by-Step Instructions**: Clear, actionable guidance
-- **California-Specific**: Tailored to CA laws and requirements
-- **Print-Ready**: Optimized for both digital and print use
-
-## Customization
-
-The HTML files can be customized by editing the content directly. The CSS styling is included in each HTML file for easy modification.
-
-## Support
-
-For questions about the guides or PDF generation, please refer to the main project documentation.
+1. **Color Contrast**: Ensuring sufficient contrast between text and background colors.
+2. **Keyboard Navigation**: Verifying that all interactive elements are accessible via keyboard.
+3. **Screen Reader Compatibility**: Testing the site with screen readers to ensure proper reading order and context.
+4. **Alt Text for Images**: Ensuring all images have descriptive alt text for better accessibility.
+5. **Semantic HTML**: Using appropriate HTML elements to convey meaning and structure.
