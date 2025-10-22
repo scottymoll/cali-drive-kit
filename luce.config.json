@@ -2,7 +2,7 @@
   "project": "Cali Drive Kit",
   "targets": {
     "rubricScore": 20,
-    "maxIterations": 50
+    "maxIterations": 3
   },
   "platforms": ["Cursor"],
   "rules": [
