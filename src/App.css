@@ -1,26 +1,26 @@
-.App {
-  text-align: center;
-  background-color: #f0f0f0;
-  font-family: Arial, sans-serif;
-  color: #333;
+/* App.css - Updated styles for improved performance */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
 }
 
-header {
-  background: #282c34;
-  padding: 20px;
-  color: white;
+h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    padding: 0;
 }
 
-footer {
-  background: #282c34;
-  padding: 10px;
-  color: white;
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
 }
 
-h1 {
-  font-size: 2.5em;
+button {
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
-p {
-  font-size: 1.2em;
+button:hover {
+    background-color: #0056b3;
 }
