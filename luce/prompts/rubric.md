@@ -1,12 +1,23 @@
-# Luce Supervisor Rubric
-Score each 0–2 (2 = perfect). Total /20 must be ≥ target to approve.
-1) UX Clarity — clear main action
-2) Visual Hierarchy — consistent spacing
-3) Consistency — colors, type, buttons
-4) Accessibility — contrast ≥4.5:1
-5) Performance — CLS <0.1, LCP <2.5s
-6) Copy Quality — concise, concrete
-7) Data Flow — APIs validated, errors handled
-8) Security/Privacy — no secret leakage
-9) Tests — units & integration pass
-10) Analytics — track CTAs & forms
+# Luce Rubric (Review Only)
+
+Return JSON ONLY with keys:
+- `score` (number 0–20)
+- `findings` (array of strings)
+- `requiredFixes` (array of strings, prioritized)
+- `cursorPrompt` (string with a concrete delta prompt for Cursor)
+- `stop` (boolean – true if target met and no work is required)
+
+Scoring anchors:
+- 0–5: major usability/performance/accessibility problems
+- 6–10: basic function, visual polish inconsistent
+- 11–15: solid UX, minor bugs, content gaps
+- 16–19: production-ready with small refinements
+- 20: ship-level: no console errors, AA contrast, responsive at 390/768/1280, no layout shift, coherent content and CTAs
+
+Checklist focus (examples):
+- **Design:** clear hierarchy, consistent spacing/typography, max line length ~12ch for H1s
+- **A11y:** focus states, aria-labels where needed, Form error live regions
+- **Perf:** CLS < 0.1, avoid blocking scripts, images correctly sized
+- **Content:** no placeholders; consistent tone and voice; crisp CTAs
+- **Forms:** input validation, readable errors, success states
+- **Guides/Outputs:** structured headings, bullets for steps, summary box up top
