@@ -1,11 +1,9 @@
 {
   "name": "luce-supervisor",
   "version": "1.0.0",
+  "private": true,
   "type": "module",
   "scripts": {
     "review": "node review.mjs"
-  },
-  "dependencies": {
-    "node-fetch": "^3.3.2"
   }
 }
