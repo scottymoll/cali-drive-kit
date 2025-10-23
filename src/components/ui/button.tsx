@@ -1,23 +1,16 @@
 import React from 'react';
+import './Button.css';
 
-export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary';
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+    variant?: 'primary' | 'secondary';
 }
 
 const Button: React.FC<ButtonProps> = ({ variant = 'primary', children, ...props }) => {
-  const baseStyles =
-    'px-4 py-2 font-semibold rounded focus:outline-none focus:ring-2 focus:ring-offset-2';
-  const variantStyles =
-    variant === 'primary'
-      ? 'bg-blue-500 text-white hover:bg-blue-600'
-      : 'bg-gray-300 text-black hover:bg-gray-400';
-
-  return (
-    <button className={`${baseStyles} ${variantStyles}`} {...props}>
-      {children}
-    </button>
-  );
+    return (
+        <button className={`button ${variant}`} {...props}>
+            {children}
+        </button>
+    );
 };
 
-export { Button };     // 👈 named export (fixes `import { Button } ...`)
-export default Button; // 👈 default export (fixes `import Button ...`)
+export default Button;
