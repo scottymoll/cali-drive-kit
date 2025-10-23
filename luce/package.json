@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "review": "node review.mjs"
+    "review": "node review.mjs",
+    "apply:cursor": "node cursor-apply.mjs"
   }
 }
