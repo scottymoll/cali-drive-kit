@@ -1,73 +1,45 @@
-name: Luce Supervisor
+name: Luce Supervisor (Review Only)
 
 on:
   push:
-  pull_request:
-  schedule:
-    - cron: '0 * * * *'  # every hour; adjust as you like
+    branches: [ main ]              # review on real code changes to main
+    paths-ignore:
+      - '.github/**'                # ignore infra changes
+      - 'luce/**'                   # ignore Luce’s own files
+      - 'README.md'
+  workflow_dispatch: {}             # allow manual runs
+
+concurrency:
+  group: luce-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   review:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
       issues: write
       pull-requests: write
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.LUCE_PAT }} # PAT so we can push branches/open PRs
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
-      - name: Install deps (Luce)
+      - name: Install Luce deps (none required; safe fallback)
         working-directory: ./luce
-        run: npm ci || npm i
+        run: npm ci || npm i || true
 
-      - name: OpenAI key diagnostics
-        run: |
-          if [ -z "${OPENAI_API_KEY}" ]; then
-            echo "OPENAI_API_KEY is EMPTY"; exit 1;
-          fi
-          echo "Key length looks like: ${#OPENAI_API_KEY}"
-          # Probe the API (status only)
-          CODE=$(curl -s -o /dev/null -w "%{http_code}" https://api.openai.com/v1/models \
-            -H "Authorization: Bearer ${OPENAI_API_KEY}")
-          echo "OpenAI /models HTTP status: $CODE"
-          if [ "$CODE" = "429" ]; then
-            echo "OpenAI says 429 (quota)."; exit 2;
-          fi
-          if [ "$CODE" -ge 400 ]; then
-            echo "OpenAI error HTTP $CODE"; exit 3;
-          fi
-        env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-
-      - name: OpenAI chat-completions smoke test
-        run: |
-          JSON='{"model":"gpt-4o-mini","messages":[{"role":"user","content":"ping"}]}'
-          CODE=$(curl -s -o /tmp/resp.json -w "%{http_code}" https://api.openai.com/v1/chat/completions \
-            -H "Authorization: Bearer ${OPENAI_API_KEY}" \
-            -H "Content-Type: application/json" \
-            -d "$JSON")
-          echo "Chat /v1/chat/completions HTTP status: $CODE"
-          tail -c 500 /tmp/resp.json || true
-          test "$CODE" -lt 400
-        env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-
-
-      - name: Run Luce Review (auto-apply)
+      - name: Run Luce Review (Issue-only, no code changes)
         working-directory: ./luce
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           PREVIEW_URL: ${{ secrets.PREVIEW_URL }}
           GITHUB_REPOSITORY: ${{ github.repository }}
           GITHUB_SHA: ${{ github.sha }}
-          GITHUB_TOKEN: ${{ secrets.LUCE_PAT }}  # used by API calls/PRs
+          GITHUB_TOKEN: ${{ github.token }}
         run: npm run review
