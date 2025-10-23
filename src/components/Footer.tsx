@@ -1,9 +1,10 @@
 import React from 'react';
+import './Footer.css';
 
-const Footer: React.FC = () => {
+const Footer = () => {
     return (
         <footer className="footer">
-            <div className="container">
+            <div className="footer-content">
                 <p>&copy; {new Date().getFullYear()} Your Company. All rights reserved.</p>
                 <nav>
                     <ul>
