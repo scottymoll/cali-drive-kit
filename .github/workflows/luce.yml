@@ -2,14 +2,12 @@ name: Luce Supervisor
 
 on:
   push:
-    branches: [ main ]           # only main
+    branches: [ main ]              # only main
     paths-ignore:
       - '.github/**'
-      - 'luce/**'                # Luce’s own commits won’t retrigger
+      - 'luce/**'                   # ignore Luce’s own commits/branches
       - 'README.md'
-  schedule:
-    - cron: '0 * * * *'          # hourly (adjust later)
-  workflow_dispatch:             # allow manual runs
+  workflow_dispatch:                # manual runs only (add cron later once stable)
 
 concurrency:
   group: luce-${{ github.ref }}
@@ -28,7 +26,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.LUCE_PAT }}   # PAT for pushing/opening PRs
+          token: ${{ secrets.LUCE_PAT }}   # PAT to push/open PRs
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -50,4 +48,5 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
           GITHUB_SHA: ${{ github.sha }}
           GITHUB_TOKEN: ${{ secrets.LUCE_PAT || github.token }}
+          # LUCE_DRYRUN: ${{ secrets.LUCE_DRYRUN }}   # set to 1 only for mock mode
         run: npm run review
