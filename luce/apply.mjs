@@ -1,7 +1,7 @@
 // Luce apply: turn Cursor-style prompt into code changes and open a PR
+// - Dedupes so only ONE Luce PR is open at a time
 // - Tries a proper git diff first (normalized a/ b/ prefixes)
 // - Falls back to full-file edits (JSON { path, content }) if patch fails
-// - Dedupes so only one Luce PR stays open at a time
 // - Labels PRs "luce-auto" for optional auto-merge workflows
 
 import fs from 'fs';
@@ -37,7 +37,7 @@ function listFiles(globs = []) {
 
 function withinAllow(relPath) {
   const allow = cfg.output?.allowPaths || [];
-  if (!allow.length) return true; // nothing specified → allow all tracked files
+  if (!allow.length) return true; // allow all tracked files if not specified
   // Very simple allowlist: treat `foo/**` as prefix `foo/`
   return allow.some(glob => {
     const pref = glob.endsWith('/**') ? glob.slice(0, -3) : glob.replace(/\*+$/,'');
@@ -45,7 +45,7 @@ function withinAllow(relPath) {
   });
 }
 
-// ------------------ GitHub helpers ------------------
+/* ------------------ GitHub helpers ------------------ */
 
 async function gh(urlPath, init = {}) {
   const res = await fetch(`https://api.github.com/repos/${REPO}${urlPath}`, {
@@ -60,6 +60,7 @@ async function gh(urlPath, init = {}) {
   return res.json();
 }
 
+// PR de-dupe: ensure only ONE Luce PR at a time
 async function findExistingLucePR() {
   const list = await gh(`/pulls?state=open&per_page=50`);
   return list.find(p =>
@@ -73,7 +74,7 @@ async function openPR(branch, title, body) {
     method: 'POST',
     body: JSON.stringify({ title, head: branch, base: process.env.GITHUB_BASE_REF || 'main', body })
   });
-  return pr; // return full PR JSON
+  return pr; // full PR JSON
 }
 
 async function addLabelsToPR(prNumber, labels = ['luce-auto']) {
@@ -83,7 +84,7 @@ async function addLabelsToPR(prNumber, labels = ['luce-auto']) {
   });
 }
 
-// ------------------ Patch pathway ------------------
+/* ------------------ Patch pathway ------------------ */
 
 function normalizePatch(patch) {
   // Ensure "diff --git a/path b/path" and "--- a/path\n+++ b/path"
@@ -118,7 +119,7 @@ function tryApplyPatch(patchText, patchPath) {
   return false;
 }
 
-// ------------------ Fallback (file edits) ------------------
+/* ------------------ Fallback (file edits) ------------------ */
 
 async function makeEdits(cursorPrompt, fileList) {
   const sys = [
@@ -186,10 +187,10 @@ function applyEdits(edits) {
   return written;
 }
 
-// ------------------ Public entry ------------------
+/* ------------------ Public entry ------------------ */
 
 export async function applyCursorPrompt(cursorPrompt) {
-  // 0) Deduplicate: if a Luce PR is already open, do nothing
+  // 0) De-dupe: if a Luce PR is already open, do nothing
   try {
     const existing = await findExistingLucePR();
     if (existing) {
@@ -286,7 +287,7 @@ export async function applyCursorPrompt(cursorPrompt) {
   //   // sh(`npm test --silent`);
   // }
 
-  // 5) Commit & push (add [skip ci] if you prefer to avoid other CI triggers)
+  // 5) Commit & push (add [skip ci] if you want to avoid other CI)
   sh(`git -c user.name="luce-bot" -c user.email="luce-bot@users.noreply.github.com" commit -m "feat(luce): auto delta"`);
   sh(`git push --set-upstream origin "${branch}"`);
 
