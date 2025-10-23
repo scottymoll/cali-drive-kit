@@ -1,77 +1,30 @@
-# CA Car Seller Kit - PDF Generation
+# Project Documentation
 
-This directory contains the complete guides for both the Basic and Premium editions of the CA Car Seller Kit.
+Welcome to the project documentation. This guide will help you understand the structure and usage of the project.
 
-## Files Included
+## Table of Contents
+- [Introduction](#introduction)
+- [Getting Started](#getting-started)
+- [Features](#features)
+- [Contributing](#contributing)
+- [License](#license)
 
-### HTML Guides
-- `basic-kit-guide.html` - Complete Basic Kit guide (6 features)
-- `premium-kit-guide.html` - Complete Premium Kit guide (12 features)
+## Introduction
+This project is designed to provide a comprehensive solution for managing tasks efficiently.
 
-### PDF Generation
-- `generate-pdfs.js` - Script to convert HTML to PDF
-- `package.json` - Dependencies for PDF generation
-
-## How to Generate PDFs
-
-### Prerequisites
-- Node.js installed on your system
-- Internet connection (for downloading Puppeteer)
-
-### Steps
-
-1. **Install Dependencies**
-   ```bash
-   cd src/guides
-   npm install
-   ```
-
-2. **Generate PDFs**
-   ```bash
-   npm run generate
-   ```
-
-3. **Output Files**
-   - `CA-Car-Seller-Kit-Basic-Edition.pdf`
-   - `CA-Car-Seller-Kit-Premium-Edition.pdf`
-
-## Guide Contents
-
-### Basic Kit (6 Features)
-1. Pricing Guide & Worksheets
-2. Photo & Listing Blueprint
-3. Buyer Screening Scripts
-4. Safe Test-Drive Protocol
-5. Offer & Negotiation Tactics
-6. Closeout & DMV Paperwork
-
-### Premium Kit (12 Features)
-1. Advanced Pricing Mastery Guide
-2. Complete Legal Forms Library
-3. Profit Optimization Worksheets
-4. Buyer Psychology & Negotiation Guide
-5. Market Intelligence Handbook
-6. Professional Templates Collection
-7. Fraud Protection & Safety Guide
-8. Professional Photography Guide
-9. Advanced Communication Scripts
-10. Complete Safety Protocol Guide
-11. DMV & Paperwork Master Guide
-12. Lifetime Access & Updates
+## Getting Started
+To get started with the project, follow these steps:
+1. Clone the repository: `git clone <repository-url>`
+2. Install dependencies: `npm install`
+3. Start the development server: `npm start`
 
 ## Features
+- User authentication
+- Task management
+- Real-time notifications
 
-- **Professional Design**: Clean, modern layout with proper branding
-- **Comprehensive Content**: Everything needed to sell a car in California
-- **Templates & Forms**: Ready-to-use documents and scripts
-- **Step-by-Step Instructions**: Clear, actionable guidance
-- **California-Specific**: Tailored to CA laws and requirements
-- **Print-Ready**: Optimized for both digital and print use
+## Contributing
+We welcome contributions! Please read our [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests.
 
-## Customization
-
-The HTML files can be customized by editing the content directly. The CSS styling is included in each HTML file for easy modification.
-
-## Support
-
-For questions about the guides or PDF generation, please refer to the main project documentation.
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
