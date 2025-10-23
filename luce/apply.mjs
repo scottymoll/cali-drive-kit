@@ -173,18 +173,24 @@ async function openPR(branch, title, body) {
 export async function applyCursorPrompt(cursorPrompt) {
   // Skip if an existing Luce PR is open
   try {
-    const existing = await findExistingPR();
-    if (existing) {
-      console.log(`Existing PR #${existing.number} (${existing.html_url}); skipping.`);
-      return;
-    }
-  } catch (err) {
-    console.warn('PR check failed:', err.message);
-  }
+    const allow = cfg.output?.allowPaths || [];
+const fileList = listFiles(allow);
 
-  const allow = cfg.output?.allowPaths || [];
-  const fileList = listFiles(allow);
-  const branch = `${cfg.output?.deltaBranchPrefix || 'luce/delta-'}${Date.now()}`;
+let branch;
+const existing = await findExistingLucePR();
+if (existing) {
+  // Reuse existing PR branch (rolling PR)
+  branch = existing.head.ref;
+  console.log(`Updating existing Luce PR #${existing.number} on branch ${branch}`);
+  // Ensure we’re on that branch and up to date
+  sh(`git fetch origin "${branch}"`);
+  sh(`git checkout "${branch}"`);
+  sh(`git reset --hard "origin/${branch}"`);
+} else {
+  // Create a new working branch
+  branch = `${cfg.output?.deltaBranchPrefix || 'luce/delta-'}${Date.now()}`;
+  sh(`git checkout -b "${branch}"`);
+}
 
   // Ask model for unified diff
   let patch = '';
