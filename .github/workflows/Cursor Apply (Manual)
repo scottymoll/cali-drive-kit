@@ -1,0 +1,40 @@
+name: Cursor Apply (Manual)
+
+on:
+  workflow_dispatch: {}   # manual trigger only
+
+concurrency:
+  group: cursor-apply-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.LUCE_PAT || github.token }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Luce deps
+        working-directory: ./luce
+        run: npm ci || npm i
+
+      - name: Apply latest Luce Issue prompt (edits-only)
+        working-directory: ./luce
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_SHA: ${{ github.sha }}
+          GITHUB_TOKEN: ${{ secrets.LUCE_PAT || github.token }}
+        run: npm run apply:cursor
