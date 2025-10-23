@@ -1,8 +1,8 @@
-// Luce apply: convert Cursor-style prompt into code changes and keep a rolling PR updated
-// - If a Luce PR exists, reuse its branch and push new commits
-// - If none exists, create a new branch and open a PR
-// - Try unified git diff first (normalized a/ b/ prefixes), then fallback to JSON file edits
-// - Label PRs "luce-auto" for optional auto-merge workflows
+// Luce apply: rolling PR with strong idempotence
+// - Reuses existing Luce PR branch and pushes at most ONCE per source SHA
+// - Skips commit if no staged changes
+// - Tries unified diff first (normalized a/ b/), falls back to JSON edits
+// - Labels PR "luce-auto" and comments when updated
 
 import fs from 'fs';
 import path from 'path';
@@ -37,12 +37,12 @@ function listFiles(globs = []) {
 
 function withinAllow(relPath) {
   const allow = cfg.output?.allowPaths || [];
-  if (!allow.length) return true; // allow all tracked files if not specified
-  // Very simple allowlist: treat `foo/**` as prefix `foo/`
-  return allow.some(glob => {
+  if (!allow.length) return true;
+  const matches = allow.some(glob => {
     const pref = glob.endsWith('/**') ? glob.slice(0, -3) : glob.replace(/\*+$/,'');
     return relPath.startsWith(pref);
   });
+  return matches;
 }
 
 /* ------------------ GitHub helpers ------------------ */
@@ -60,7 +60,6 @@ async function gh(urlPath, init = {}) {
   return res.json();
 }
 
-// Find an existing open Luce PR (used for rolling PR updates)
 async function findExistingLucePR() {
   const list = await gh(`/pulls?state=open&per_page=50`);
   return list.find(p =>
@@ -74,7 +73,7 @@ async function openPR(branch, title, body) {
     method: 'POST',
     body: JSON.stringify({ title, head: branch, base: process.env.GITHUB_BASE_REF || 'main', body })
   });
-  return pr; // full PR JSON
+  return pr;
 }
 
 async function addLabelsToPR(prNumber, labels = ['luce-auto']) {
@@ -94,7 +93,6 @@ async function commentOnPR(prNumber, body) {
 /* ------------------ Patch pathway ------------------ */
 
 function normalizePatch(patch) {
-  // Ensure "diff --git a/path b/path" and "--- a/path\n+++ b/path"
   let out = patch
     .replace(/^diff --git\s+([^\s]+)\s+([^\s]+)$/gm, (_m, left, right) => {
       const a = left.startsWith('a/') ? left : `a/${left.replace(/^a\//,'')}`;
@@ -194,6 +192,19 @@ function applyEdits(edits) {
   return written;
 }
 
+/* ------------------ Idempotence helpers ------------------ */
+
+function lastCommitMessage() {
+  try { return sh('git log -1 --pretty=%B'); }
+  catch { return ''; }
+}
+
+function alreadyUpdatedForSHA(branch, sourceSha) {
+  const msg = lastCommitMessage();
+  // If latest commit already references this source SHA, skip re-committing
+  return msg.includes(`[source:${sourceSha}]`);
+}
+
 /* ------------------ Public entry (rolling PR) ------------------ */
 
 export async function applyCursorPrompt(cursorPrompt) {
@@ -216,6 +227,12 @@ export async function applyCursorPrompt(cursorPrompt) {
     sh(`git fetch origin "${branch}"`);
     sh(`git checkout "${branch}"`);
     sh(`git reset --hard "origin/${branch}"`);
+
+    // Guard A: only one commit per source SHA
+    if (alreadyUpdatedForSHA(branch, SHA)) {
+      console.log(`This PR already has an update for source SHA ${SHA}. Skipping.`);
+      return;
+    }
   } else {
     // Create a new working branch
     branch = `${cfg.output?.deltaBranchPrefix || 'luce/delta-'}${Date.now()}`;
@@ -285,30 +302,31 @@ export async function applyCursorPrompt(cursorPrompt) {
   if (!appliedViaPatch) {
     const edits = await makeEdits(cursorPrompt, fileList);
     const written = applyEdits(edits);
-    // Stage only the files we actually wrote
     sh(`git add ${written.map(w => `"${w}"`).join(' ')}`);
     console.log(`Applied ${written.length} edited file(s).`);
   } else {
-    // Stage broadly within allowlist
     const addTargets = allow.length ? allow.join(' ') : '.';
     sh(`git add ${addTargets}`);
   }
 
-  // Optional: build/tests gate (uncomment when ready)
-  // if (fs.existsSync(path.join(ROOT, 'package.json'))) {
-  //   sh(`npm ci`);
-  //   sh(`npm run build`);
-  //   // sh(`npm test --silent`);
-  // }
+  // Guard B: skip commit if nothing staged
+  try {
+    sh('git diff --cached --quiet'); // exits 0 if no staged changes
+    console.log('No staged changes detected; skipping commit.');
+    return;
+  } catch {
+    // there ARE staged changes
+  }
 
-  // Commit & push (consider adding [skip ci] if you have other CI that shouldn’t rerun)
-  sh(`git -c user.name="luce-bot" -c user.email="luce-bot@users.noreply.github.com" commit -m "feat(luce): auto delta"`);
+  // Commit & push (embed source SHA marker for idempotence)
+  const commitMsg = `feat(luce): auto delta [source:${SHA}]`;
+  sh(`git -c user.name="luce-bot" -c user.email="luce-bot@users.noreply.github.com" commit -m "${commitMsg}"`);
   sh(`git push --set-upstream origin "${branch}"`);
 
   // Open a new PR or comment on the existing one
   if (existing) {
     try {
-      await commentOnPR(existing.number, '🔁 Luce pushed a new delta commit to this rolling PR.');
+      await commentOnPR(existing.number, `🔁 Luce pushed a new delta commit for source \`${SHA}\`.`);
     } catch (e) {
       console.warn('Could not comment on existing PR:', e.message);
     }
