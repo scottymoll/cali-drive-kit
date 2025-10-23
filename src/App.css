@@ -1,12 +1,20 @@
 .App {
   text-align: center;
+  background-color: #f0f0f0;
+  font-family: Arial, sans-serif;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.header {
+  background-color: #282c34;
+  padding: 20px;
+  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.footer {
+  background-color: #282c34;
+  padding: 10px;
+  color: white;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
 }
