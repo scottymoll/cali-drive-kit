@@ -1,21 +1,23 @@
 .App {
   text-align: center;
-  background-color: #f0f0f0;
-  color: #333;
-  font-family: 'Arial', sans-serif;
 }
 
-header {
-  background: #282c34;
-  padding: 20px;
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
   color: white;
 }
 
-footer {
-  background: #282c34;
-  padding: 10px;
-  color: white;
-  position: fixed;
-  width: 100%;
-  bottom: 0;
+.App-link {
+  color: #61dafb;
 }
