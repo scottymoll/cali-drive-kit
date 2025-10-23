@@ -1,24 +1,28 @@
-.App {
-  text-align: center;
-  background-color: #f0f0f0;
-  font-family: 'Arial', sans-serif;
+/* Updated styles to improve website score */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
 }
 
-.header {
-  background-color: #282c34;
-  padding: 20px;
-  color: white;
+h1, h2, h3, h4, h5, h6 {
+    color: #333;
 }
 
-.footer {
-  background-color: #282c34;
-  padding: 10px;
-  color: white;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
 }
 
-.main {
-  padding: 20px;
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
 }
