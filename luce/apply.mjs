@@ -1,6 +1,8 @@
-// Luce apply.mjs — resilient version (Step 4)
-// Handles git patches, fallback JSON edits, auto-labeling, and PR creation
-// -------------------------------------------------------------------------
+// Luce apply: convert Cursor-style prompt into code changes and keep a rolling PR updated
+// - If a Luce PR exists, reuse its branch and push new commits
+// - If none exists, create a new branch and open a PR
+// - Try unified git diff first (normalized a/ b/ prefixes), then fallback to JSON file edits
+// - Label PRs "luce-auto" for optional auto-merge workflows
 
 import fs from 'fs';
 import path from 'path';
@@ -13,24 +15,20 @@ const __dirname = path.dirname(__filename);
 const ROOT = path.join(__dirname, '..');
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-const GITHUB_TOKEN   = process.env.GITHUB_TOKEN;
-const REPO           = process.env.GITHUB_REPOSITORY;
+const GITHUB_TOKEN   = process.env.GITHUB_TOKEN;        // LUCE_PAT or github.token
+const REPO           = process.env.GITHUB_REPOSITORY;   // owner/name
 const SHA            = process.env.GITHUB_SHA || '';
 
-if (!OPENAI_API_KEY) throw new Error('Missing OPENAI_API_KEY');
-if (!GITHUB_TOKEN)   throw new Error('Missing GITHUB_TOKEN');
-if (!REPO)           throw new Error('Missing GITHUB_REPOSITORY');
+if (!OPENAI_API_KEY) throw new Error('OPENAI_API_KEY missing');
+if (!GITHUB_TOKEN)   throw new Error('GITHUB_TOKEN missing');
+if (!REPO)           throw new Error('GITHUB_REPOSITORY missing');
 
 const CONFIG_PATH = path.join(ROOT, 'luce.config.json');
 const cfg = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8'));
 
-function sh(cmd) {
-  return execSync(cmd, { stdio: 'pipe', encoding: 'utf8', cwd: ROOT }).trim();
+function sh(cmd, opts = {}) {
+  return execSync(cmd, { stdio: 'pipe', encoding: 'utf8', cwd: ROOT, ...opts }).trim();
 }
-
-// -------------------------------------------------------------------------
-// Helpers
-// -------------------------------------------------------------------------
 
 function listFiles(globs = []) {
   if (!globs.length) return sh('git ls-files');
@@ -39,15 +37,18 @@ function listFiles(globs = []) {
 
 function withinAllow(relPath) {
   const allow = cfg.output?.allowPaths || [];
-  if (!allow.length) return true;
+  if (!allow.length) return true; // allow all tracked files if not specified
+  // Very simple allowlist: treat `foo/**` as prefix `foo/`
   return allow.some(glob => {
-    const prefix = glob.endsWith('/**') ? glob.slice(0, -3) : glob.replace(/\*+$/, '');
-    return relPath.startsWith(prefix);
+    const pref = glob.endsWith('/**') ? glob.slice(0, -3) : glob.replace(/\*+$/,'');
+    return relPath.startsWith(pref);
   });
 }
 
-async function gh(pathname, init = {}) {
-  const res = await fetch(`https://api.github.com/repos/${REPO}${pathname}`, {
+/* ------------------ GitHub helpers ------------------ */
+
+async function gh(urlPath, init = {}) {
+  const res = await fetch(`https://api.github.com/repos/${REPO}${urlPath}`, {
     ...init,
     headers: {
       Authorization: `Bearer ${GITHUB_TOKEN}`,
@@ -55,20 +56,54 @@ async function gh(pathname, init = {}) {
       ...(init.headers || {})
     }
   });
-  if (!res.ok) throw new Error(`${init.method || 'GET'} ${pathname}: ${res.status} ${await res.text()}`);
+  if (!res.ok) throw new Error(`${init.method || 'GET'} ${urlPath} failed: ${res.status} ${await res.text()}`);
   return res.json();
 }
 
-// -------------------------------------------------------------------------
-// Patch utilities
-// -------------------------------------------------------------------------
+// Find an existing open Luce PR (used for rolling PR updates)
+async function findExistingLucePR() {
+  const list = await gh(`/pulls?state=open&per_page=50`);
+  return list.find(p =>
+    p.head?.ref?.startsWith('luce/delta-') ||
+    (p.title || '').toLowerCase().includes('luce auto-delta')
+  );
+}
+
+async function openPR(branch, title, body) {
+  const pr = await gh(`/pulls`, {
+    method: 'POST',
+    body: JSON.stringify({ title, head: branch, base: process.env.GITHUB_BASE_REF || 'main', body })
+  });
+  return pr; // full PR JSON
+}
+
+async function addLabelsToPR(prNumber, labels = ['luce-auto']) {
+  await gh(`/issues/${prNumber}/labels`, {
+    method: 'POST',
+    body: JSON.stringify({ labels })
+  });
+}
+
+async function commentOnPR(prNumber, body) {
+  await gh(`/issues/${prNumber}/comments`, {
+    method: 'POST',
+    body: JSON.stringify({ body })
+  });
+}
+
+/* ------------------ Patch pathway ------------------ */
 
 function normalizePatch(patch) {
-  return patch
-    .replace(/^diff --git\s+([^\s]+)\s+([^\s]+)$/gm, (_, a, b) =>
-      `diff --git a/${a.replace(/^a\//,'')} b/${b.replace(/^b\//,'')}`)
-    .replace(/^---\s+(.+)$/gm, (_, p) => `--- a/${p.replace(/^a\//,'')}`)
-    .replace(/^\+\+\+\s+(.+)$/gm, (_, p) => `+++ b/${p.replace(/^b\//,'')}`);
+  // Ensure "diff --git a/path b/path" and "--- a/path\n+++ b/path"
+  let out = patch
+    .replace(/^diff --git\s+([^\s]+)\s+([^\s]+)$/gm, (_m, left, right) => {
+      const a = left.startsWith('a/') ? left : `a/${left.replace(/^a\//,'')}`;
+      const b = right.startsWith('b/') ? right : `b/${right.replace(/^b\//,'')}`;
+      return `diff --git ${a} ${b}`;
+    })
+    .replace(/^---\s+(.+)$/gm, (_m, p) => `--- a/${p.replace(/^a\//,'')}`)
+    .replace(/^\+\+\+\s+(.+)$/gm, (_m, p) => `+++ b/${p.replace(/^b\//,'')}`);
+  return out;
 }
 
 function tryApplyPatch(patchText, patchPath) {
@@ -87,28 +122,35 @@ function tryApplyPatch(patchText, patchPath) {
       lastErr = e;
     }
   }
-  throw new Error(`Patch failed after all strategies. Last error: ${lastErr?.message}`);
+  if (lastErr) throw new Error('Patch failed to apply cleanly after multiple strategies.');
+  return false;
 }
 
-// -------------------------------------------------------------------------
-// Fallback (JSON edits)
-// -------------------------------------------------------------------------
+/* ------------------ Fallback (file edits) ------------------ */
 
-async function makeEdits(prompt, fileList) {
+async function makeEdits(cursorPrompt, fileList) {
   const sys = [
-    'Return JSON ONLY with shape:',
-    '{"edits":[{"path":"relative/path","content":"<FULL FILE CONTENT>"}]}',
-    'Edit only allow-listed files.  Provide full replacements.'
+    'You will output JSON ONLY with this exact shape:',
+    '{"edits":[{"path":"relative/path.ext","content":"<FULL NEW FILE CONTENT>"}]}',
+    'Rules:',
+    '- Only include existing files from the provided list unless creating small assets in allowed dirs.',
+    '- Paths MUST be relative to the repo root.',
+    '- Update only allow-listed paths.',
+    '- Provide FULL replacement content for each file you include.'
   ].join('\n');
 
   const user = [
-    'File list (relative to repo root):',
-    '```', fileList, '```',
+    'Repo files (subset, relative to repo root):',
+    '```',
+    fileList,
+    '```',
     '',
-    'Requested change:',
-    '```', prompt, '```',
+    'Delta request (Cursor-style):',
+    '```',
+    cursorPrompt,
+    '```',
     '',
-    'Return JSON ONLY.'
+    'Return JSON ONLY. No prose.'
   ].join('\n');
 
   const res = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -118,93 +160,90 @@ async function makeEdits(prompt, fileList) {
       model: 'gpt-4o-mini',
       temperature: 0.2,
       response_format: { type: 'json_object' },
-      messages: [{ role: 'system', content: sys }, { role: 'user', content: user }]
+      messages: [
+        { role: 'system', content: sys },
+        { role: 'user', content: user }
+      ]
     })
   });
   if (!res.ok) throw new Error(await res.text());
   const data = await res.json();
-  const content = data.choices?.[0]?.message?.content || '{}';
-  const obj = JSON.parse(content);
-  if (!obj?.edits) throw new Error('No "edits" array in JSON response.');
+  let obj;
+  try {
+    obj = JSON.parse(data.choices?.[0]?.message?.content || '{}');
+  } catch {
+    throw new Error('Model returned non-JSON for edits fallback.');
+  }
+  if (!obj?.edits || !Array.isArray(obj.edits)) {
+    throw new Error('Edits JSON missing "edits" array.');
+  }
   return obj.edits;
 }
 
 function applyEdits(edits) {
   const written = [];
   for (const { path: rel, content } of edits) {
-    if (!rel || typeof content !== 'string' || !withinAllow(rel)) continue;
+    if (!rel || typeof content !== 'string') continue;
+    if (!withinAllow(rel)) continue;
     const abs = path.join(ROOT, rel);
     fs.mkdirSync(path.dirname(abs), { recursive: true });
     fs.writeFileSync(abs, content, 'utf8');
     written.push(rel);
   }
-  if (!written.length) throw new Error('No edits applied.');
+  if (!written.length) throw new Error('No edits were applied (allowPaths may be too strict).');
   return written;
 }
 
-// -------------------------------------------------------------------------
-// PR utilities
-// -------------------------------------------------------------------------
-
-async function findExistingPR() {
-  const list = await gh(`/pulls?state=open&per_page=50`);
-  return list.find(p =>
-    p.head?.ref?.startsWith('luce/delta-') ||
-    (p.title || '').toLowerCase().includes('luce auto-delta')
-  );
-}
-
-async function openPR(branch, title, body) {
-  const pr = await gh(`/pulls`, {
-    method: 'POST',
-    body: JSON.stringify({ title, head: branch, base: 'main', body })
-  });
-  await gh(`/issues/${pr.number}/labels`, {
-    method: 'POST',
-    body: JSON.stringify({ labels: ['luce-auto'] })
-  });
-  return pr;
-}
-
-// -------------------------------------------------------------------------
-// Entry point
-// -------------------------------------------------------------------------
+/* ------------------ Public entry (rolling PR) ------------------ */
 
 export async function applyCursorPrompt(cursorPrompt) {
-  // Skip if an existing Luce PR is open
+  const allow = cfg.output?.allowPaths || [];
+  const fileList = listFiles(allow);
+
+  // Check for an existing Luce PR (rolling PR mode)
+  let existing = null;
   try {
-    const allow = cfg.output?.allowPaths || [];
-const fileList = listFiles(allow);
+    existing = await findExistingLucePR();
+  } catch (e) {
+    console.warn('Unable to check existing PRs:', e.message);
+  }
 
-let branch;
-const existing = await findExistingLucePR();
-if (existing) {
-  // Reuse existing PR branch (rolling PR)
-  branch = existing.head.ref;
-  console.log(`Updating existing Luce PR #${existing.number} on branch ${branch}`);
-  // Ensure we’re on that branch and up to date
-  sh(`git fetch origin "${branch}"`);
-  sh(`git checkout "${branch}"`);
-  sh(`git reset --hard "origin/${branch}"`);
-} else {
-  // Create a new working branch
-  branch = `${cfg.output?.deltaBranchPrefix || 'luce/delta-'}${Date.now()}`;
-  sh(`git checkout -b "${branch}"`);
-}
+  let branch;
+  if (existing) {
+    branch = existing.head.ref;
+    console.log(`Updating existing Luce PR #${existing.number} on branch ${branch}`);
+    // Ensure local branch reflects remote latest
+    sh(`git fetch origin "${branch}"`);
+    sh(`git checkout "${branch}"`);
+    sh(`git reset --hard "origin/${branch}"`);
+  } else {
+    // Create a new working branch
+    branch = `${cfg.output?.deltaBranchPrefix || 'luce/delta-'}${Date.now()}`;
+    sh(`git checkout -b "${branch}"`);
+  }
 
-  // Ask model for unified diff
+  // Ask the model for a unified diff
   let patch = '';
   try {
     const sys = [
-      'Output ONLY a unified diff patch (no prose).',
-      'Use correct a/ and b/ prefixes.'
+      'Output ONLY a git unified diff patch (no prose).',
+      'The patch MUST use: diff --git a/<path> b/<path>, --- a/<path>, +++ b/<path>',
+      'Patch must apply with: git apply -p0 --reject --whitespace=fix',
+      'Edit only allow-listed files; changes minimal and self-contained.'
     ].join(' ');
+
     const user = [
-      'Files:',
-      '```', fileList, '```',
+      'Repo files (subset, relative paths from repo root):',
+      '```',
+      fileList,
+      '```',
       '',
-      'Request:',
-      '```', cursorPrompt, '```'
+      'Delta request (Cursor-style):',
+      '```',
+      cursorPrompt,
+      '```',
+      '',
+      'Produce a single unified diff from repo root.'
     ].join('\n');
 
     const res = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -213,48 +252,74 @@ if (existing) {
       body: JSON.stringify({
         model: 'gpt-4o-mini',
         temperature: 0.2,
-        messages: [{ role: 'system', content: sys }, { role: 'user', content: user }]
+        messages: [
+          { role: 'system', content: sys },
+          { role: 'user', content: user }
+        ]
       })
     });
     if (!res.ok) throw new Error(await res.text());
     const data = await res.json();
     patch = data.choices?.[0]?.message?.content || '';
   } catch (e) {
-    console.error('Diff request failed:', e.message);
+    console.error('Failed to get diff from model:', e.message);
   }
 
-  // Create working branch
-  sh(`git checkout -b "${branch}"`);
-
-  // Try patch first
-  let applied = false;
+  // Try to apply the patch; if that fails, fall back to file edits
+  let appliedViaPatch = false;
   const patchPath = path.join(__dirname, 'artifacts.patch');
+
   if (patch && patch.includes('diff --git')) {
     try {
-      tryApplyPatch(normalizePatch(patch), patchPath);
-      applied = true;
+      const normalized = normalizePatch(patch);
+      tryApplyPatch(normalized, patchPath);
+      appliedViaPatch = true;
       console.log('Patch applied successfully.');
-    } catch (err) {
-      console.error('Patch apply failed:', err.message);
+    } catch (e) {
+      console.error('Patch apply failed:', e.message);
     }
+  } else {
+    console.log('No usable patch returned; using edits fallback.');
   }
 
-  // Fallback to edits
-  if (!applied) {
-    console.log('Falling back to file edits...');
+  if (!appliedViaPatch) {
     const edits = await makeEdits(cursorPrompt, fileList);
     const written = applyEdits(edits);
-    sh(`git add ${written.map(f => `"${f}"`).join(' ')}`);
+    // Stage only the files we actually wrote
+    sh(`git add ${written.map(w => `"${w}"`).join(' ')}`);
+    console.log(`Applied ${written.length} edited file(s).`);
   } else {
+    // Stage broadly within allowlist
     const addTargets = allow.length ? allow.join(' ') : '.';
     sh(`git add ${addTargets}`);
   }
 
-  // Commit & push
+  // Optional: build/tests gate (uncomment when ready)
+  // if (fs.existsSync(path.join(ROOT, 'package.json'))) {
+  //   sh(`npm ci`);
+  //   sh(`npm run build`);
+  //   // sh(`npm test --silent`);
+  // }
+
+  // Commit & push (consider adding [skip ci] if you have other CI that shouldn’t rerun)
   sh(`git -c user.name="luce-bot" -c user.email="luce-bot@users.noreply.github.com" commit -m "feat(luce): auto delta"`);
   sh(`git push --set-upstream origin "${branch}"`);
 
-  // Open PR
-  const pr = await openPR(branch, 'Luce auto-delta', `Auto changes from Luce.\nSource commit: ${SHA}`);
-  console.log('Opened PR:', pr.html_url);
+  // Open a new PR or comment on the existing one
+  if (existing) {
+    try {
+      await commentOnPR(existing.number, '🔁 Luce pushed a new delta commit to this rolling PR.');
+    } catch (e) {
+      console.warn('Could not comment on existing PR:', e.message);
+    }
+    console.log(`Updated existing PR #${existing.number}: ${existing.html_url}`);
+  } else {
+    const pr = await openPR(branch, 'Luce auto-delta', `Auto changes from Luce.\n\nSource commit: \`${SHA}\``);
+    try {
+      await addLabelsToPR(pr.number, ['luce-auto']);
+    } catch (e) {
+      console.warn('Could not add label to PR:', e.message);
+    }
+    console.log('Opened PR:', pr.html_url);
+  }
 }
