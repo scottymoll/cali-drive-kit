@@ -1,7 +1,19 @@
 name: Cursor Apply (Manual)
 
 on:
-  workflow_dispatch: {}   # manual trigger only
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: 'Optional: Specific Luce Review issue number (defaults to latest open)'
+        required: false
+      task_limit:
+        description: 'Max number of bullets from "CHANGES TO MAKE" to process (1-20)'
+        required: false
+        default: '10'
+      passes_per_task:
+        description: 'Edit passes per task (1-5)'
+        required: false
+        default: '2'
 
 concurrency:
   group: cursor-apply-${{ github.ref }}
@@ -30,11 +42,14 @@ jobs:
         working-directory: ./luce
         run: npm ci || npm i
 
-      - name: Apply latest Luce Issue prompt (edits-only)
+      - name: Apply Luce Issue prompt (task-aware, multi-pass)
         working-directory: ./luce
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           GITHUB_REPOSITORY: ${{ github.repository }}
           GITHUB_SHA: ${{ github.sha }}
           GITHUB_TOKEN: ${{ secrets.LUCE_PAT || github.token }}
+          ISSUE_NUMBER: ${{ inputs.issue_number }}
+          TASK_LIMIT: ${{ inputs.task_limit }}
+          PASSES_PER_TASK: ${{ inputs.passes_per_task }}
         run: npm run apply:cursor
