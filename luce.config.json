@@ -1,22 +1,10 @@
 {
-  "project": "Cali Drive Kit",
+  "project": "My Site (Luce Supervisor)",
   "targets": {
-    "rubricScore": 20,
-    "maxIterations": 3
+    "rubricScore": 19,
+    "maxIterations": 1
   },
   "platforms": ["Cursor"],
-  "rules": [
-    "All pages must load cleanly on desktop and mobile with no console errors.",
-    "Page content must align with the Cali Drive Kit branding and professional tone.",
-    "Typography must maintain a consistent hierarchy (H1, H2, H3) and spacing rhythm.",
-    "Hero sections should use responsive background images with 4.5:1 contrast or better.",
-    "Buttons, inputs, and forms must include hover, focus, and active states.",
-    "Mobile CLS (Cumulative Layout Shift) must be below 0.1.",
-    "No placeholder or lorem text should remain anywhere.",
-    "Forms must validate input and display inline error/success messages.",
-    "Generated guides or documents must be well-structured, readable, and formatted for print (page breaks, section headers, consistent tone).",
-    "Any downloadable assets (PDFs, docs) must render correctly without text overflow or missing images."
-  ],
   "preview": {
     "urlEnv": "PREVIEW_URL",
     "paths": ["/"]
@@ -25,6 +13,17 @@
     "runLighthouse": false,
     "collectScreenshots": true
   },
+  "rules": [
+    "Design: clean visual hierarchy; heading max-width ≤ 12ch; generous white space.",
+    "Accessibility: color contrast ≥ 4.5:1; visible focus states; aria-labels where needed; keyboard-only flows.",
+    "Performance: no layout shift on load (mobile CLS < 0.1); avoid blocking scripts in <head>.",
+    "Content: no lorem ipsum or placeholders; consistent tone and typography scale.",
+    "Forms: field validation + clear error copy; aria-live region for errors; success state UX.",
+    "Navigation: consistent header/footer; active state; skip-to-content link.",
+    "Generated guides: sectioned structure (H1/H2/H3), bullets for steps, top summary box; no orphan lines.",
+    "Exported PDFs/docs (if any): page breaks at section boundaries; table of contents if > 4 sections.",
+    "Quality: no console errors; no 404 assets; images sized correctly; responsive at 390px/768px/1280px."
+  ],
   "output": {
     "openIssueOnFail": true,
     "createDeltaBranch": true,
@@ -35,8 +34,12 @@
       "pages/**",
       "src/**",
       "components/**",
+      "lib/**",
+      "styles/**",
       "public/**",
-      "styles/**"
+      "server/**",
+      "api/**",
+      "functions/**"
     ]
   }
 }
