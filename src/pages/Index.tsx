@@ -3,13 +3,13 @@ import { FeatureCard } from '../components/FeatureCard';
 import { Footer } from '../components/Footer';
 import { Header } from '../components/Header';
 
-const Index: React.FC = () => {
+const Index = () => {
     return (
         <div>
             <Header />
             <main>
                 <h1>Welcome to Our Website</h1>
-                <p>Explore our features and services.</p>
+                <p>Please review the findings and required fixes to improve the website.</p>
                 <FeatureCard />
             </main>
             <Footer />
