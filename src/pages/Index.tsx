@@ -11,7 +11,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import {
-  DollarSign,
+  DollarSign, 
   Camera,
   MessageSquare,
   Shield,
