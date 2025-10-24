@@ -63,7 +63,6 @@ import paperworkImage from "@/assets/paperwork-flatlay.jpg";
 import { useScrollToSection } from "@/hooks/use-scroll-to-section";
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
-import InteractivePricingCalculator from "@/components/InteractivePricingCalculator";
 
 const Index = () => {
   const { scrollToSection } = useScrollToSection();
@@ -610,17 +609,6 @@ const Index = () => {
             </div>
           </div>
           
-          {/* Interactive Pricing Calculator */}
-          <div className="mt-16">
-            <div className="text-center mb-8">
-              <h3 className="text-2xl font-semibold mb-4">Try Our Interactive Pricing Calculator</h3>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
-                Get an instant estimate of your car's value to help with pricing decisions. 
-                This is just a preview - our full pricing guide includes much more detailed analysis.
-              </p>
-            </div>
-            <InteractivePricingCalculator />
-          </div>
         </div>
       </section>
 
