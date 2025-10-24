@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Check, ArrowLeft, CreditCard } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { trackCheckoutStarted } from '@/lib/analytics';
 
 const BasicCheckout: React.FC = () => {
+  useEffect(() => {
+    trackCheckoutStarted('basic');
+  }, []);
+
   const features = [
     'Pricing Guide & Worksheets',
     'Photo & Listing Blueprint', 
@@ -13,6 +18,12 @@ const BasicCheckout: React.FC = () => {
     'Offer & Negotiation Tactics',
     'CA DMV Paperwork Steps'
   ];
+
+  const handlePurchase = () => {
+    // In production, this would integrate with Stripe/Gumroad
+    // For now, redirect to thank-you page
+    window.location.href = '/thank-you?plan=basic';
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -132,7 +143,7 @@ const BasicCheckout: React.FC = () => {
 
                   <Button 
                     className="w-full bg-pacific-600 hover:bg-pacific-700 text-white py-3 text-lg font-semibold"
-                    disabled
+                    onClick={handlePurchase}
                   >
                     <CreditCard className="w-5 h-5 mr-2" />
                     Complete Purchase - $19.99

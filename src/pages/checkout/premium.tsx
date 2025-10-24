@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Check, ArrowLeft, CreditCard, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { trackCheckoutStarted } from '@/lib/analytics';
 
 const PremiumCheckout: React.FC = () => {
+  useEffect(() => {
+    trackCheckoutStarted('premium');
+  }, []);
+
   const basicFeatures = [
     'Pricing Guide & Worksheets',
     'Photo & Listing Blueprint', 
@@ -13,6 +18,12 @@ const PremiumCheckout: React.FC = () => {
     'Offer & Negotiation Tactics',
     'CA DMV Paperwork Steps'
   ];
+
+  const handlePurchase = () => {
+    // In production, this would integrate with Stripe/Gumroad
+    // For now, redirect to thank-you page
+    window.location.href = '/thank-you?plan=premium';
+  };
 
   const premiumFeatures = [
     'Advanced Pricing Mastery Guide',
@@ -173,7 +184,7 @@ const PremiumCheckout: React.FC = () => {
 
                   <Button 
                     className="w-full bg-gradient-to-r from-pacific-600 to-pacific-700 hover:from-pacific-700 hover:to-pacific-800 text-white py-3 text-lg font-semibold"
-                    disabled
+                    onClick={handlePurchase}
                   >
                     <CreditCard className="w-5 h-5 mr-2" />
                     Complete Purchase - $97

@@ -6,19 +6,19 @@ const HowItWorks: React.FC = () => {
     {
       icon: CheckCircle2,
       title: "Choose your kit",
-      description: "Pick Basic or Premium based on your needs",
+      description: "Basic or Premium",
       detail: "Both kits include essential checklists and scripts. Premium adds advanced pricing strategies and legal templates."
     },
     {
       icon: FileText,
       title: "Follow the checklists",
-      description: "From pricing to paperwork",
+      description: "Pricing → listing → paperwork",
       detail: "Step-by-step guidance through pricing your car, creating listings, screening buyers, and handling DMV paperwork."
     },
     {
       icon: Handshake,
       title: "Close safely",
-      description: "Transfer title the right way, avoid scams",
+      description: "Transfer title the right way and avoid scams",
       detail: "Complete the sale with confidence using our safety protocols and legal transfer procedures."
     }
   ];

@@ -10,6 +10,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import BasicCheckout from "./pages/checkout/basic";
 import PremiumCheckout from "./pages/checkout/premium";
+import ThankYou from "./pages/thank-you";
 import { useURLValidation } from "@/hooks/use-url-validation";
 
 const queryClient = new QueryClient({
@@ -67,6 +68,7 @@ const RoutesWithValidation = () => {
       } />
       <Route path="/checkout/basic" element={<BasicCheckout />} />
       <Route path="/checkout/premium" element={<PremiumCheckout />} />
+      <Route path="/thank-you" element={<ThankYou />} />
       {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
       <Route path="*" element={<NotFound />} />
     </Routes>

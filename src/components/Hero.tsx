@@ -1,18 +1,17 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { CheckCircle2, Shield, Download, MapPin } from 'lucide-react';
 import heroImage from '@/assets/hero-coastal.jpg';
+import TrustChips from './TrustChips';
+import { trackCTAClick } from '@/lib/analytics';
 
 const Hero: React.FC = () => {
-  const trustBadges = [
-    { icon: Shield, text: "30-Day Money-Back", description: "Full refund guarantee" },
-    { icon: Download, text: "Instant Download", description: "Get started immediately" },
-    { icon: MapPin, text: "California-Specific", description: "Built for CA DMV rules" }
-  ];
+  const handleCTAClick = (ctaType: 'basic' | 'premium', location: string) => {
+    trackCTAClick(ctaType, location);
+  };
 
   return (
-    <section className="relative min-h-[75vh] flex items-center justify-center overflow-hidden" role="banner">
+    <section className="relative min-h-[75vh] sm:min-h-[60vh] flex items-center justify-center overflow-hidden" role="banner">
       {/* Background Image */}
       <div className="absolute inset-0">
         <img
@@ -35,16 +34,12 @@ const Hero: React.FC = () => {
         </h1>
         
         <h2 className="text-white/95 text-xl md:text-2xl lg:text-3xl font-medium mb-8 max-w-4xl mx-auto leading-relaxed">
-          Everything you need to sell a car in California—DMV forms, scripts, pricing, and step-by-step checklists.
+          DMV-compliant steps, pricing worksheets, buyer-screening scripts, and safety protocols—so you sell fast and legally in California.
         </h2>
 
-        <p className="text-white/90 text-lg md:text-xl mb-12 max-w-3xl mx-auto leading-relaxed">
-          DMV-compliant steps, buyer screening scripts, pricing worksheets, and safety protocols—so you sell quickly and confidently.
-        </p>
-
         {/* CTAs */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12" role="group" aria-label="Purchase options">
-          <Link to="/checkout/basic">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8" role="group" aria-label="Purchase options">
+          <Link to="/checkout/basic" onClick={() => handleCTAClick('basic', 'hero')}>
             <Button
               size="lg"
               className="bg-pacific-600 hover:bg-pacific-700 text-white px-8 py-4 text-lg font-semibold h-12 min-w-[200px] focus:ring-4 focus:ring-pacific-300/50"
@@ -54,7 +49,7 @@ const Hero: React.FC = () => {
             </Button>
           </Link>
           
-          <Link to="/checkout/premium">
+          <Link to="/checkout/premium" onClick={() => handleCTAClick('premium', 'hero')}>
             <Button
               variant="outline"
               size="lg"
@@ -70,18 +65,8 @@ const Hero: React.FC = () => {
           Instant download. Works on all devices.
         </p>
 
-        {/* Trust Badges */}
-        <div className="flex flex-wrap justify-center gap-8 md:gap-12" role="list" aria-label="Trust indicators">
-          {trustBadges.map((badge, index) => (
-            <div key={index} className="flex items-center gap-2 text-white/90" role="listitem">
-              <badge.icon className="w-5 h-5 text-seafoam-300" aria-hidden="true" />
-              <div className="text-center">
-                <div className="font-semibold text-sm md:text-base">{badge.text}</div>
-                <div className="text-xs text-white/70">{badge.description}</div>
-              </div>
-            </div>
-          ))}
-        </div>
+        {/* Trust Chips */}
+        <TrustChips />
       </div>
     </section>
   );

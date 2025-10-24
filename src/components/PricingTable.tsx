@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { Check, Star, Shield } from 'lucide-react';
+import { Check, Star, Shield, X, FileText, Download } from 'lucide-react';
+import { trackCTAClick, trackPricingView } from '@/lib/analytics';
 
 const PricingTable: React.FC = () => {
+  const [showDetails, setShowDetails] = useState<'basic' | 'premium' | null>(null);
+
   const features = [
     { name: "Essential checklists + scripts", basic: true, premium: true },
     { name: "DMV paperwork steps", basic: true, premium: true },
@@ -18,11 +21,37 @@ const PricingTable: React.FC = () => {
     { name: "Lifetime updates", basic: false, premium: true }
   ];
 
+  const basicFiles = [
+    { name: "Pricing Guide & Worksheets", format: "PDF", size: "2.1 MB" },
+    { name: "DMV Paperwork Checklist", format: "PDF", size: "1.8 MB" },
+    { name: "Buyer Screening Scripts", format: "PDF", size: "1.2 MB" },
+    { name: "Test-Drive Safety Protocol", format: "PDF", size: "1.5 MB" },
+    { name: "Listing Templates", format: "Word/PDF", size: "0.8 MB" }
+  ];
+
+  const premiumFiles = [
+    ...basicFiles,
+    { name: "Advanced Pricing Strategies", format: "PDF", size: "3.2 MB" },
+    { name: "Legal Forms Library", format: "PDF", size: "4.1 MB" },
+    { name: "Professional Templates", format: "Word/Excel", size: "2.3 MB" },
+    { name: "Fraud Prevention Guide", format: "PDF", size: "2.8 MB" },
+    { name: "Market Intelligence Report", format: "PDF", size: "1.9 MB" }
+  ];
+
   const whyPremium = [
     "Advanced pricing strategies to maximize profit",
     "Complete legal forms library with templates", 
     "Professional workflow for faster sales"
   ];
+
+  const handleCTAClick = (ctaType: 'basic' | 'premium', location: string) => {
+    trackCTAClick(ctaType, location);
+  };
+
+  const handleDetailsClick = (plan: 'basic' | 'premium') => {
+    setShowDetails(plan);
+    trackPricingView();
+  };
 
   return (
     <section className="py-20 bg-sand-50" aria-labelledby="pricing-title">
@@ -43,7 +72,7 @@ const PricingTable: React.FC = () => {
             <div className="text-center mb-8">
               <h3 className="text-2xl font-bold text-gray-900 mb-2">Basic Kit</h3>
               <div className="text-4xl font-bold text-pacific-600 mb-2">$19.99</div>
-              <p className="text-gray-600">Essential checklists + scripts to list quickly and legally.</p>
+              <p className="text-gray-600">Essential checklists and scripts to list quickly and legally.</p>
             </div>
             
             <div className="space-y-4 mb-8">
@@ -55,14 +84,25 @@ const PricingTable: React.FC = () => {
               ))}
             </div>
 
-            <Link to="/checkout/basic" className="block">
-              <Button 
-                className="w-full bg-pacific-600 hover:bg-pacific-700 text-white py-3 text-lg font-semibold h-12 focus:ring-4 focus:ring-pacific-300/50"
-                aria-label="Get Basic Kit for $19.99"
+            <div className="space-y-4">
+              <Link to="/checkout/basic" onClick={() => handleCTAClick('basic', 'pricing')} className="block">
+                <Button 
+                  className="w-full bg-pacific-600 hover:bg-pacific-700 text-white py-3 text-lg font-semibold h-12 focus:ring-4 focus:ring-pacific-300/50"
+                  aria-label="Get Basic Kit for $19.99"
+                >
+                  Get Basic Kit — $19.99
+                </Button>
+              </Link>
+              
+              <Button
+                variant="outline"
+                onClick={() => handleDetailsClick('basic')}
+                className="w-full"
               >
-                Get Basic Kit — $19.99
+                <FileText className="w-4 h-4 mr-2" />
+                Details
               </Button>
-            </Link>
+            </div>
           </div>
 
           {/* Premium Kit */}
@@ -77,7 +117,7 @@ const PricingTable: React.FC = () => {
             <div className="text-center mb-8">
               <h3 className="text-2xl font-bold text-white mb-2">Premium Kit</h3>
               <div className="text-4xl font-bold text-golden-300 mb-2">$97</div>
-              <p className="text-pacific-100">Everything in Basic + advanced pricing, legal templates, and pro-level workflow.</p>
+              <p className="text-pacific-100">Everything in Basic + advanced pricing, legal templates, and pro-workflow.</p>
             </div>
             
             <div className="space-y-4 mb-8">
@@ -95,14 +135,25 @@ const PricingTable: React.FC = () => {
               ))}
             </div>
 
-            <Link to="/checkout/premium" className="block">
-              <Button 
-                className="w-full bg-golden-300 text-pacific-900 hover:bg-golden-200 py-3 text-lg font-semibold h-12 focus:ring-4 focus:ring-golden-300/50"
-                aria-label="Get Premium Kit for $97"
+            <div className="space-y-4">
+              <Link to="/checkout/premium" onClick={() => handleCTAClick('premium', 'pricing')} className="block">
+                <Button 
+                  className="w-full bg-golden-300 text-pacific-900 hover:bg-golden-200 py-3 text-lg font-semibold h-12 focus:ring-4 focus:ring-golden-300/50"
+                  aria-label="Get Premium Kit for $97"
+                >
+                  Get Premium Kit — $97
+                </Button>
+              </Link>
+              
+              <Button
+                variant="outline"
+                onClick={() => handleDetailsClick('premium')}
+                className="w-full bg-white/10 border-white/30 text-white hover:bg-white/20"
               >
-                Get Premium Kit — $97
+                <FileText className="w-4 h-4 mr-2" />
+                Details
               </Button>
-            </Link>
+            </div>
           </div>
         </div>
 
@@ -130,6 +181,52 @@ const PricingTable: React.FC = () => {
           </p>
         </div>
       </div>
+
+      {/* Details Modal */}
+      {showDetails && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+          <div className="bg-white rounded-2xl p-8 max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-6">
+              <h3 id="modal-title" className="text-2xl font-bold text-gray-900">
+                {showDetails === 'basic' ? 'Basic Kit' : 'Premium Kit'} - What's Included
+              </h3>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowDetails(null)}
+                aria-label="Close modal"
+              >
+                <X className="w-5 h-5" />
+              </Button>
+            </div>
+
+            <div className="space-y-6">
+              <div>
+                <h4 className="font-semibold text-gray-900 mb-4">Files Included:</h4>
+                <div className="space-y-3">
+                  {(showDetails === 'basic' ? basicFiles : premiumFiles).map((file, index) => (
+                    <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                      <div className="flex items-center gap-3">
+                        <Download className="w-4 h-4 text-pacific-500" />
+                        <span className="font-medium">{file.name}</span>
+                      </div>
+                      <div className="text-sm text-gray-500">
+                        {file.format} • {file.size}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="pt-4 border-t">
+                <p className="text-sm text-gray-600">
+                  All files are instantly downloadable and work on any device. You'll receive an email with download links after purchase.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
