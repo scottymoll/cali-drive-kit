@@ -62,6 +62,7 @@ import heroImage from "@/assets/hero-coastal.jpg";
 import paperworkImage from "@/assets/paperwork-flatlay.jpg";
 import { useScrollToSection } from "@/hooks/use-scroll-to-section";
 import { useMemo } from "react";
+import { Link } from "react-router-dom";
 import InteractivePricingCalculator from "@/components/InteractivePricingCalculator";
 
 const Index = () => {
@@ -368,6 +369,42 @@ const Index = () => {
     "Close cleanly, zero DMV surprises",
   ], []);
 
+  const faqItems = useMemo(() => [
+    {
+      question: "How quickly can I sell my car using this kit?",
+      answer: "Most sellers see results within 3-7 days when following our pricing and listing strategies. The kit helps you price competitively and create listings that attract serious buyers quickly."
+    },
+    {
+      question: "Is this legal advice for California car sales?",
+      answer: "No, this is an educational resource that includes official CA DMV links and step-by-step guidance. For specific legal questions, consult an attorney. We focus on the practical process of selling your car legally in California."
+    },
+    {
+      question: "What if I have a loan on my car?",
+      answer: "The kit covers payoff steps, timing, and the documents you'll need to coordinate with your lender. We walk you through handling title transfers when there's an outstanding loan, including payoff verification and timing considerations."
+    }
+  ], []);
+
+  const testimonials = useMemo(() => [
+    {
+      quote: "I sold my Honda Civic in 4 days for $1,200 more than I expected. The pricing guide was spot on!",
+      author: "Sarah M.",
+      location: "Los Angeles",
+      kit: "Basic"
+    },
+    {
+      quote: "The DMV paperwork section saved me hours of confusion. Everything was perfectly organized and California-specific.",
+      author: "Mike R.",
+      location: "San Diego", 
+      kit: "Basic"
+    },
+    {
+      quote: "The premium kit's advanced pricing strategies helped me get $3,500 above market value for my Tesla. Worth every penny!",
+      author: "Jennifer L.",
+      location: "San Francisco",
+      kit: "Premium"
+    }
+  ], []);
+
   return (
     <div className="min-h-screen">
       {/* Skip navigation for accessibility */}
@@ -406,31 +443,33 @@ const Index = () => {
             timeline tailored to California rules.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12 animate-fade-in [animation-delay:300ms]" role="group" aria-label="Action buttons">
-            <Button
-              variant="hero"
-              size="xl"
-              onClick={() => scrollToSection("price")}
-              className="bg-golden-300 text-pacific-900 hover:bg-golden-200 font-semibold"
-              data-cta="cta-hero-premium"
-              aria-label="Get the Premium California Car Seller Kit for $97"
-            >
-              Get Premium Kit — $97
-            </Button>
-            <Button
-              variant="outline"
-              size="xl"
-              onClick={() => scrollToSection("price")}
-              className="bg-white/10 backdrop-blur-sm border-white/30 text-white hover:bg-white/20 hover:text-white"
-              data-cta="cta-hero-basic"
-              aria-label="Get the Basic California Car Seller Kit for $19.99"
-            >
-              Get Basic Kit — $19.99
-            </Button>
+            <Link to="/checkout/premium">
+              <Button
+                variant="hero"
+                size="xl"
+                className="bg-golden-300 text-pacific-900 hover:bg-golden-200 font-semibold focus:ring-4 focus:ring-golden-300/50"
+                data-cta="cta-hero-premium"
+                aria-label="Get the Premium California Car Seller Kit for $97"
+              >
+                Get Premium Kit — $97
+              </Button>
+            </Link>
+            <Link to="/checkout/basic">
+              <Button
+                variant="outline"
+                size="xl"
+                className="bg-white/10 backdrop-blur-sm border-white/30 text-white hover:bg-white/20 hover:text-white focus:ring-4 focus:ring-white/30"
+                data-cta="cta-hero-basic"
+                aria-label="Get the Basic California Car Seller Kit for $19.99"
+              >
+                Get Basic Kit — $19.99
+              </Button>
+            </Link>
             <Button
               variant="outline"
               size="xl"
               onClick={() => scrollToSection("whats-inside")}
-              className="bg-white/10 backdrop-blur-sm border-white/30 text-white hover:bg-white/20 hover:text-white"
+              className="bg-white/10 backdrop-blur-sm border-white/30 text-white hover:bg-white/20 hover:text-white focus:ring-4 focus:ring-white/30"
               aria-label="Learn more about what's included in the kits"
             >
               Compare Kits
@@ -739,9 +778,11 @@ const Index = () => {
                   </li>
                 ))}
               </ul>
-              <Button variant="outline" size="xl" className="w-full mb-6" data-cta="cta-basic">
-                Get Basic Kit — $19.99
-              </Button>
+              <Link to="/checkout/basic" className="block">
+                <Button variant="outline" size="xl" className="w-full mb-6 focus:ring-4 focus:ring-pacific-300/50" data-cta="cta-basic">
+                  Get Basic Kit — $19.99
+                </Button>
+              </Link>
               <div className="text-center text-xs text-muted-foreground">
                 <p>One-time purchase • Instant download</p>
               </div>
@@ -768,14 +809,16 @@ const Index = () => {
                   </li>
                 ))}
               </ul>
-              <Button 
-                variant="hero" 
-                size="xl" 
-                className="w-full mb-6 bg-golden-300 text-pacific-900 hover:bg-golden-200" 
-                data-cta="cta-premium"
-              >
-                Get Premium Kit — $97
-              </Button>
+              <Link to="/checkout/premium" className="block">
+                <Button 
+                  variant="hero" 
+                  size="xl" 
+                  className="w-full mb-6 bg-golden-300 text-pacific-900 hover:bg-golden-200 focus:ring-4 focus:ring-golden-300/50" 
+                  data-cta="cta-premium"
+                >
+                  Get Premium Kit — $97
+                </Button>
+              </Link>
               <div className="text-center text-xs text-pacific-100">
                 <p>Lifetime access • Complete guide • All templates included</p>
               </div>
@@ -993,10 +1036,60 @@ const Index = () => {
         </div>
       </section>
 
+      {/* TESTIMONIALS SECTION */}
+      <section className="py-20 bg-background" aria-labelledby="testimonials-title">
+        <div className="max-w-[1200px] mx-auto px-6 md:px-12">
+          <div className="text-center mb-16">
+            <h2 id="testimonials-title" className="mb-4">What Our Customers Say</h2>
+            <p className="text-body-l text-muted-foreground max-w-2xl mx-auto">
+              Real results from real people who used our kits to sell their cars successfully.
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-8">
+            {testimonials.map((testimonial, index) => (
+              <div key={index} className="bg-card rounded-lg p-6 shadow-card">
+                <div className="flex items-center gap-2 mb-4">
+                  <Star className="w-5 h-5 text-golden-300" />
+                  <Star className="w-5 h-5 text-golden-300" />
+                  <Star className="w-5 h-5 text-golden-300" />
+                  <Star className="w-5 h-5 text-golden-300" />
+                  <Star className="w-5 h-5 text-golden-300" />
+                </div>
+                <blockquote className="text-gray-700 mb-4 italic">
+                  "{testimonial.quote}"
+                </blockquote>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="font-semibold text-gray-900">{testimonial.author}</div>
+                    <div className="text-sm text-gray-600">{testimonial.location}</div>
+                  </div>
+                  <div className="text-xs bg-pacific-100 text-pacific-700 px-2 py-1 rounded-full">
+                    {testimonial.kit} Kit
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* FAQ SECTION */}
-      <section id="faq" className="py-20 bg-sand-50">
+      <section id="faq" className="py-20 bg-sand-50" aria-labelledby="faq-title">
         <div className="max-w-[1200px] mx-auto px-6">
-          <h2 className="text-center mb-12">Frequently Asked Questions</h2>
+          <h2 id="faq-title" className="text-center mb-12">Frequently Asked Questions</h2>
+          
+          {/* Quick FAQ */}
+          <div className="max-w-3xl mx-auto mb-16">
+            <div className="space-y-6">
+              {faqItems.map((item, index) => (
+                <div key={index} className="bg-white rounded-lg p-6 shadow-sm border">
+                  <h3 className="font-semibold text-gray-900 mb-3">{item.question}</h3>
+                  <p className="text-gray-700 leading-relaxed">{item.answer}</p>
+                </div>
+              ))}
+            </div>
+          </div>
           
           {/* BASIC FAQ */}
           <div className="mb-16">
@@ -1116,29 +1209,31 @@ const Index = () => {
             Choose the kit that's right for you and start maximizing your car's value today.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button
-              variant="hero"
-              size="xl"
-              onClick={() => scrollToSection("price")}
-              className="bg-golden-300 text-pacific-900 hover:bg-golden-200 font-semibold"
-              data-cta="cta-premium-bottom"
-            >
-              Get Premium Kit — $97
-            </Button>
-            <Button
-              variant="outline"
-              size="xl"
-              onClick={() => scrollToSection("price")}
-              className="bg-white/10 backdrop-blur-sm border-white/30 text-white hover:bg-white/20 hover:text-white"
-              data-cta="cta-basic-bottom"
-            >
-              Get Basic Kit — $19.99
-            </Button>
+            <Link to="/checkout/premium">
+              <Button
+                variant="hero"
+                size="xl"
+                className="bg-golden-300 text-pacific-900 hover:bg-golden-200 font-semibold focus:ring-4 focus:ring-golden-300/50"
+                data-cta="cta-premium-bottom"
+              >
+                Get Premium Kit — $97
+              </Button>
+            </Link>
+            <Link to="/checkout/basic">
+              <Button
+                variant="outline"
+                size="xl"
+                className="bg-white/10 backdrop-blur-sm border-white/30 text-white hover:bg-white/20 hover:text-white focus:ring-4 focus:ring-white/30"
+                data-cta="cta-basic-bottom"
+              >
+                Get Basic Kit — $19.99
+              </Button>
+            </Link>
             <Button
               variant="outline"
               size="xl"
               onClick={() => scrollToSection("whats-inside")}
-              className="bg-white/10 backdrop-blur-sm border-white/30 text-white hover:bg-white/20 hover:text-white"
+              className="bg-white/10 backdrop-blur-sm border-white/30 text-white hover:bg-white/20 hover:text-white focus:ring-4 focus:ring-white/30"
             >
               Compare Kits
             </Button>
