@@ -31,6 +31,11 @@ export function safeParseURL(input: string): URLParseResult {
       // This looks like a malformed URL, try to construct a proper one
       cleanInput = `https://${cleanInput}`;
     }
+    
+    // Handle cases where the URL might be missing protocol but has a valid domain
+    if (!cleanInput.includes('://') && cleanInput.includes('.') && !cleanInput.startsWith('http')) {
+      cleanInput = `https://${cleanInput}`;
+    }
 
     // Ensure the URL has a protocol
     if (!cleanInput.match(/^https?:\/\//)) {
