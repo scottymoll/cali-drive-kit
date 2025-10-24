@@ -62,6 +62,7 @@ import heroImage from "@/assets/hero-coastal.jpg";
 import paperworkImage from "@/assets/paperwork-flatlay.jpg";
 import { useScrollToSection } from "@/hooks/use-scroll-to-section";
 import { useMemo } from "react";
+import InteractivePricingCalculator from "@/components/InteractivePricingCalculator";
 
 const Index = () => {
   const { scrollToSection } = useScrollToSection();
@@ -517,11 +518,17 @@ const Index = () => {
       </section>
 
       {/* BUILT FOR CALIFORNIA SECTION */}
-      <section className="py-20 bg-sand-50">
+      <section className="py-20 bg-sand-50" aria-labelledby="california-title">
         <div className="max-w-[1200px] mx-auto px-6 md:px-12">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="text-center mb-12">
+            <h2 id="california-title" className="mb-4">Built for California</h2>
+            <p className="text-body-l text-muted-foreground max-w-2xl mx-auto">
+              Everything you need to know about selling your car in California, plus interactive tools to get you started.
+            </p>
+          </div>
+          
+          <div className="grid lg:grid-cols-2 gap-12 items-start">
             <div>
-              <h2 className="mb-8">Built for California</h2>
               <div className="space-y-8">
                 <div>
                   <div className="inline-block bg-sunset-400/10 text-sunset-400 px-3 py-1 rounded-full text-sm font-semibold mb-3">
@@ -562,6 +569,18 @@ const Index = () => {
                 ))}
               </ul>
             </div>
+          </div>
+          
+          {/* Interactive Pricing Calculator */}
+          <div className="mt-16">
+            <div className="text-center mb-8">
+              <h3 className="text-2xl font-semibold mb-4">Try Our Interactive Pricing Calculator</h3>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Get an instant estimate of your car's value to help with pricing decisions. 
+                This is just a preview - our full pricing guide includes much more detailed analysis.
+              </p>
+            </div>
+            <InteractivePricingCalculator />
           </div>
         </div>
       </section>
