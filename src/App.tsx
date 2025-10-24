@@ -6,8 +6,62 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
+import { useURLValidation } from "@/hooks/use-url-validation";
 
 const queryClient = new QueryClient();
+
+const AppContent = () => {
+  const { isValid, error, isChecking } = useURLValidation();
+
+  // Show loading state while checking URL validity
+  if (isChecking) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-pacific-500 mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // If URL is invalid, show error
+  if (!isValid && error) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center px-6">
+        <div className="text-center max-w-md mx-auto">
+          <div className="mb-8">
+            <div className="w-16 h-16 bg-destructive/10 rounded-full flex items-center justify-center mx-auto mb-4">
+              <span className="text-destructive text-2xl">⚠️</span>
+            </div>
+            <h1 className="text-2xl font-heading font-semibold text-foreground mb-4">
+              Navigation Error
+            </h1>
+            <p className="text-muted-foreground leading-relaxed mb-8">
+              {error}
+            </p>
+          </div>
+          <button
+            onClick={() => window.location.href = '/'}
+            className="bg-pacific-500 text-white px-6 py-3 rounded-md hover:bg-pacific-600 transition-colors"
+          >
+            Go to Homepage
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Index />} />
+        {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </BrowserRouter>
+  );
+};
 
 const App = () => (
   <ErrorBoundary>
@@ -15,13 +69,7 @@ const App = () => (
       <TooltipProvider>
         <Toaster />
         <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
+        <AppContent />
       </TooltipProvider>
     </QueryClientProvider>
   </ErrorBoundary>

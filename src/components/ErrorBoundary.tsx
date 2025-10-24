@@ -1,6 +1,7 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
 import { Button } from '@/components/ui/button';
-import { AlertTriangle, RefreshCw } from 'lucide-react';
+import { AlertTriangle, RefreshCw, Globe } from 'lucide-react';
+import { handleFetchError, safeParseURL } from '@/utils/urlHandler';
 
 interface Props {
   children: ReactNode;
@@ -36,16 +37,28 @@ class ErrorBoundary extends Component<Props, State> {
         return this.props.fallback;
       }
 
+      // Check if this is a URL parsing error
+      const isURLParsingError = this.state.error?.message?.includes('Failed to parse URL') || 
+                                this.state.error?.message?.includes('Invalid URL');
+      
+      const errorMessage = isURLParsingError 
+        ? handleFetchError(this.state.error!, window.location.href)
+        : "We're sorry, but something unexpected happened. Please try refreshing the page or contact support if the problem persists.";
+
       return (
         <div className="min-h-screen bg-background flex items-center justify-center px-6">
           <div className="text-center max-w-md mx-auto">
             <div className="mb-8">
-              <AlertTriangle className="w-16 h-16 text-destructive mx-auto mb-4" />
+              {isURLParsingError ? (
+                <Globe className="w-16 h-16 text-destructive mx-auto mb-4" />
+              ) : (
+                <AlertTriangle className="w-16 h-16 text-destructive mx-auto mb-4" />
+              )}
               <h1 className="text-2xl font-heading font-semibold text-foreground mb-4">
-                Something went wrong
+                {isURLParsingError ? 'Navigation Error' : 'Something went wrong'}
               </h1>
               <p className="text-muted-foreground leading-relaxed mb-8">
-                We're sorry, but something unexpected happened. Please try refreshing the page or contact support if the problem persists.
+                {errorMessage}
               </p>
               {process.env.NODE_ENV === 'development' && this.state.error && (
                 <details className="text-left bg-muted p-4 rounded-lg mb-6">
@@ -73,6 +86,16 @@ class ErrorBoundary extends Component<Props, State> {
                 <RefreshCw className="w-4 h-4" />
                 Refresh Page
               </Button>
+              {isURLParsingError && (
+                <Button 
+                  variant="outline" 
+                  onClick={() => window.location.href = '/'}
+                  className="flex items-center gap-2"
+                >
+                  <Globe className="w-4 h-4" />
+                  Go to Homepage
+                </Button>
+              )}
             </div>
           </div>
         </div>
