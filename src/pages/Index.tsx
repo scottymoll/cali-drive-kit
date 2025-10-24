@@ -1,4 +1,4 @@
-import Header from "@/components/Header"; 
+import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FeatureCard from "@/components/FeatureCard";
 import StepCard from "@/components/StepCard";
@@ -11,7 +11,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import {
-  DollarSign, 
+  DollarSign,
   Camera,
   MessageSquare,
   Shield,
@@ -379,6 +379,8 @@ const Index = () => {
             backgroundImage: `linear-gradient(rgba(13, 43, 62, 0.7), rgba(13, 43, 62, 0.5)), url(${heroImage})`,
           }}
           aria-hidden="true"
+          role="img"
+          aria-label="California coastal highway with car selling concept"
         />
         <div className="relative z-10 max-w-[1200px] mx-auto px-6 md:px-12 py-32 text-center">
           <h1 className="text-white mb-6 animate-fade-in">
@@ -800,7 +802,7 @@ const Index = () => {
                       </td>
                     <td className="text-center p-6 bg-pacific-500/10">
                       <Check className="w-5 h-5 text-golden-300 mx-auto" />
-                    </td>
+                      </td>
                     </tr>
                   <tr className="border-b border-border">
                     <td className="p-6 text-foreground font-medium">Photo & Listing Blueprint</td>
@@ -1064,7 +1066,13 @@ const Index = () => {
       {/* FINAL CTA BAND */}
       <section className="py-24 gradient-cta relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0" style={{ backgroundImage: `url(${paperworkImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }} />
+          <div 
+            className="absolute inset-0" 
+            style={{ backgroundImage: `url(${paperworkImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+            role="img"
+            aria-label="DMV paperwork and car selling documents"
+            aria-hidden="true"
+          />
         </div>
         <div className="relative z-10 max-w-[1200px] mx-auto px-6 md:px-12 text-center">
           <h2 className="text-white mb-4">Ready to sell with confidence?</h2>
@@ -1110,4 +1118,4 @@ const Index = () => {
   );
 };
 
-export default Index; 
+export default Index;
