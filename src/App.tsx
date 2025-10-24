@@ -19,7 +19,7 @@ const queryClient = new QueryClient({
   },
 });
 
-const AppContent = () => {
+const RoutesWithValidation = () => {
   const { isValid, error, isChecking } = useURLValidation();
 
   // Show loading state while checking URL validity
@@ -62,13 +62,11 @@ const AppContent = () => {
   }
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Index />} />
-        {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route path="/" element={<Index />} />
+      {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   );
 };
 
@@ -78,7 +76,9 @@ const App = () => (
       <TooltipProvider>
         <Toaster />
         <Sonner />
-        <AppContent />
+        <BrowserRouter>
+          <RoutesWithValidation />
+        </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>
   </ErrorBoundary>
