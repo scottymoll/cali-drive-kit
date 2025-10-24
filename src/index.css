@@ -37,7 +37,7 @@ All colors MUST be HSL.
     --secondary-foreground: var(--pacific-900);
 
     --muted: var(--asphalt-200);
-    --muted-foreground: 215 16% 47%;
+    --muted-foreground: 215 16% 35%;
 
     --accent: var(--seafoam-300);
     --accent-foreground: var(--pacific-900);
@@ -86,7 +86,7 @@ All colors MUST be HSL.
     --secondary: var(--pacific-600);
     --secondary-foreground: var(--white);
     --muted: var(--pacific-600);
-    --muted-foreground: 215 20% 65%;
+    --muted-foreground: 215 20% 75%;
     --accent: var(--seafoam-300);
     --accent-foreground: var(--pacific-900);
     --destructive: 0 63% 31%;
@@ -158,5 +158,29 @@ All colors MUST be HSL.
 
   .gradient-cta {
     background: var(--gradient-cta);
+  }
+
+  /* Prevent layout shifts */
+  .aspect-ratio-16-9 {
+    aspect-ratio: 16 / 9;
+  }
+
+  .aspect-ratio-4-3 {
+    aspect-ratio: 4 / 3;
+  }
+
+  .aspect-ratio-3-2 {
+    aspect-ratio: 3 / 2;
+  }
+
+  /* Image optimization */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Focus improvements */
+  .focus-visible-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pacific-500 focus-visible:ring-offset-2;
   }
 }

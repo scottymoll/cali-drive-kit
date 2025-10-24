@@ -373,15 +373,19 @@ const Index = () => {
 
       {/* HERO SECTION */}
       <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden" aria-label="Hero section">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{
-            backgroundImage: `linear-gradient(rgba(13, 43, 62, 0.7), rgba(13, 43, 62, 0.5)), url(${heroImage})`,
-          }}
-          aria-hidden="true"
-          role="img"
-          aria-label="California coastal highway with car selling concept"
-        />
+        <div className="absolute inset-0">
+          <img
+            src={heroImage}
+            alt="California coastal highway with car selling concept"
+            className="absolute inset-0 w-full h-full object-cover"
+            width={1200}
+            height={800}
+            loading="eager"
+            decoding="async"
+            aria-hidden="true"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-pacific-900/70 to-pacific-900/50" />
+        </div>
         <div className="relative z-10 max-w-[1200px] mx-auto px-6 md:px-12 py-32 text-center">
           <h1 className="text-white mb-6 animate-fade-in">
             Sell your car in California—fast, safe, and DMV-compliant.
@@ -1066,11 +1070,14 @@ const Index = () => {
       {/* FINAL CTA BAND */}
       <section className="py-24 gradient-cta relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
-          <div 
-            className="absolute inset-0" 
-            style={{ backgroundImage: `url(${paperworkImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
-            role="img"
-            aria-label="DMV paperwork and car selling documents"
+          <img
+            src={paperworkImage}
+            alt="DMV paperwork and car selling documents"
+            className="absolute inset-0 w-full h-full object-cover"
+            width={1200}
+            height={600}
+            loading="lazy"
+            decoding="async"
             aria-hidden="true"
           />
         </div>

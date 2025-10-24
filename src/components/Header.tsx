@@ -27,7 +27,8 @@ const Header = () => {
           <div className="flex items-center">
             <button
               onClick={scrollToTop}
-              className="font-heading font-bold text-lg md:text-xl tracking-tighter bg-pacific-900 text-white px-3 py-1.5 rounded-md hover:bg-pacific-600 transition-smooth"
+              className="font-heading font-bold text-lg md:text-xl tracking-tighter bg-pacific-900 text-white px-3 py-1.5 rounded-md hover:bg-pacific-600 transition-smooth focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pacific-500 focus-visible:ring-offset-2"
+              aria-label="Go to top of page"
             >
               CA Car Seller Kit
             </button>
@@ -36,7 +37,7 @@ const Header = () => {
           <nav className="hidden lg:flex items-center gap-8" role="navigation" aria-label="Main navigation">
             <button
               onClick={() => scrollToSection("whats-inside")}
-              className="text-sm font-medium text-foreground/80 hover:text-foreground transition-smooth"
+              className="text-sm font-medium text-foreground/80 hover:text-foreground transition-smooth focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pacific-500 focus-visible:ring-offset-2 rounded-md px-2 py-1"
               data-track="nav"
               aria-label="Navigate to What's Inside section"
             >
@@ -44,7 +45,7 @@ const Header = () => {
             </button>
             <button
               onClick={() => scrollToSection("how-it-works")}
-              className="text-sm font-medium text-foreground/80 hover:text-foreground transition-smooth"
+              className="text-sm font-medium text-foreground/80 hover:text-foreground transition-smooth focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pacific-500 focus-visible:ring-offset-2 rounded-md px-2 py-1"
               data-track="nav"
               aria-label="Navigate to How It Works section"
             >
@@ -52,7 +53,7 @@ const Header = () => {
             </button>
             <button
               onClick={() => scrollToSection("results")}
-              className="text-sm font-medium text-foreground/80 hover:text-foreground transition-smooth"
+              className="text-sm font-medium text-foreground/80 hover:text-foreground transition-smooth focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pacific-500 focus-visible:ring-offset-2 rounded-md px-2 py-1"
               data-track="nav"
               aria-label="Navigate to Results section"
             >
@@ -60,7 +61,7 @@ const Header = () => {
             </button>
             <button
               onClick={() => scrollToSection("faq")}
-              className="text-sm font-medium text-foreground/80 hover:text-foreground transition-smooth"
+              className="text-sm font-medium text-foreground/80 hover:text-foreground transition-smooth focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pacific-500 focus-visible:ring-offset-2 rounded-md px-2 py-1"
               data-track="nav"
               aria-label="Navigate to FAQ section"
             >

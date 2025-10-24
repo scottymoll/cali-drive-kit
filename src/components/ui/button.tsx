@@ -8,19 +8,19 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        primary: 'bg-primary text-primary-foreground hover:bg-primary/90',
-        secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-        outline: 'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
-        ghost: 'hover:bg-accent hover:text-accent-foreground',
-        hero: 'bg-gradient-to-r from-pacific-900 to-pacific-600 text-white hover:from-pacific-800 hover:to-pacific-500 shadow-lg hover:shadow-xl',
-        destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
+        primary: 'bg-primary text-primary-foreground hover:bg-primary/90 focus-visible:ring-primary/50',
+        secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80 focus-visible:ring-secondary/50',
+        outline: 'border border-input bg-background hover:bg-accent hover:text-accent-foreground focus-visible:ring-accent/50',
+        ghost: 'hover:bg-accent hover:text-accent-foreground focus-visible:ring-accent/50',
+        hero: 'bg-gradient-to-r from-pacific-900 to-pacific-600 text-white hover:from-pacific-800 hover:to-pacific-500 shadow-lg hover:shadow-xl focus-visible:ring-pacific-500/50',
+        destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90 focus-visible:ring-destructive/50',
       },
       size: {
-        sm: 'h-9 px-3 text-sm',
-        default: 'h-10 px-4 py-2',
-        lg: 'h-11 px-8 text-lg',
-        xl: 'h-12 px-10 text-xl',
-        icon: 'h-10 w-10',
+        sm: 'h-9 px-3 text-sm font-medium',
+        default: 'h-10 px-4 py-2 font-semibold',
+        lg: 'h-11 px-8 text-lg font-semibold',
+        xl: 'h-12 px-10 text-xl font-semibold',
+        icon: 'h-10 w-10 font-semibold',
       },
     },
     defaultVariants: {
