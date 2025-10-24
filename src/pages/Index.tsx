@@ -369,10 +369,20 @@ const Index = () => {
 
   return (
     <div className="min-h-screen">
+      {/* Skip navigation for accessibility */}
+      <a 
+        href="#main-content" 
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-pacific-500 text-white px-4 py-2 rounded-md z-50"
+        aria-label="Skip to main content"
+      >
+        Skip to main content
+      </a>
+      
       <Header />
 
       {/* HERO SECTION */}
-      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden" aria-label="Hero section">
+      <main role="main" aria-label="Main content" id="main-content">
+        <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden" aria-label="Hero section" role="banner">
         <div className="absolute inset-0">
           <img
             src={heroImage}
@@ -387,14 +397,14 @@ const Index = () => {
           <div className="absolute inset-0 bg-gradient-to-b from-pacific-900/70 to-pacific-900/50" />
         </div>
         <div className="relative z-10 max-w-[1200px] mx-auto px-6 md:px-12 py-32 text-center">
-          <h1 className="text-white mb-6 animate-fade-in">
+          <h1 className="text-white mb-6 animate-fade-in" id="hero-title">
             Sell your car in California—fast, safe, and DMV-compliant.
           </h1>
-          <p className="text-body-l text-white/95 max-w-3xl mx-auto mb-8 animate-fade-in [animation-delay:150ms]">
+          <p className="text-body-l text-white/95 max-w-3xl mx-auto mb-8 animate-fade-in [animation-delay:150ms]" aria-describedby="hero-title">
             A step-by-step kit with pricing tools, checklist, scripts, forms, and a no-nonsense
             timeline tailored to California rules.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12 animate-fade-in [animation-delay:300ms]">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12 animate-fade-in [animation-delay:300ms]" role="group" aria-label="Action buttons">
             <Button
               variant="hero"
               size="xl"
@@ -425,7 +435,7 @@ const Index = () => {
               Compare Kits
             </Button>
           </div>
-          <div className="flex flex-wrap justify-center gap-8 text-white/90 text-sm animate-fade-in [animation-delay:450ms]" role="list" aria-label="Key features">
+          <div className="flex flex-wrap justify-center gap-8 text-white/90 text-sm animate-fade-in [animation-delay:450ms]" role="list" aria-label="Key features and benefits">
             <div className="flex items-center gap-2" role="listitem">
               <CheckCircle2 className="w-5 h-5 text-seafoam-300" aria-hidden="true" />
               <span>California-specific</span>
@@ -443,23 +453,23 @@ const Index = () => {
       </section>
 
       {/* WHAT'S INSIDE SECTION */}
-      <section id="whats-inside" className="py-20 bg-background">
+      <section id="whats-inside" className="py-20 bg-background" aria-labelledby="whats-inside-title">
         <div className="max-w-[1200px] mx-auto px-6 md:px-12">
           <div className="text-center mb-16">
-            <h2 className="mb-4">Choose Your Kit</h2>
-            <p className="text-body-l text-muted-foreground max-w-2xl mx-auto">
+            <h2 id="whats-inside-title" className="mb-4">Choose Your Kit</h2>
+            <p className="text-body-l text-muted-foreground max-w-2xl mx-auto" aria-describedby="whats-inside-title">
               Everything you need to price, list, screen, and close your private car sale in
               California. Choose the level that's right for you.
             </p>
           </div>
           
           {/* BASIC KIT */}
-          <div className="mb-16">
+          <div className="mb-16" role="region" aria-labelledby="basic-kit-title">
             <div className="text-center mb-8">
-              <h3 className="text-2xl font-semibold mb-2">Basic Kit - $19.99</h3>
+              <h3 id="basic-kit-title" className="text-2xl font-semibold mb-2">Basic Kit - $19.99</h3>
               <p className="text-muted-foreground">Essential tools for confident car selling</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" role="list" aria-label="Basic kit features">
               {basicFeatures.map((feature, index) => (
               <FeatureCard
                 key={index}
@@ -472,16 +482,16 @@ const Index = () => {
           </div>
 
           {/* PREMIUM KIT */}
-          <div className="bg-gradient-to-br from-pacific-50 to-seafoam-50 rounded-2xl p-8 border-2 border-pacific-200">
+          <div className="bg-gradient-to-br from-pacific-50 to-seafoam-50 rounded-2xl p-8 border-2 border-pacific-200" role="region" aria-labelledby="premium-kit-title">
             <div className="text-center mb-8">
-              <div className="inline-flex items-center gap-2 bg-pacific-500 text-white px-4 py-2 rounded-full text-sm font-semibold mb-4">
-                <Star className="w-4 h-4" />
+              <div className="inline-flex items-center gap-2 bg-pacific-500 text-white px-4 py-2 rounded-full text-sm font-semibold mb-4" aria-label="Premium kit badge">
+                <Star className="w-4 h-4" aria-hidden="true" />
                 PREMIUM KIT
               </div>
-              <h3 className="text-3xl font-bold mb-2 text-pacific-900">Professional Edition - $97</h3>
+              <h3 id="premium-kit-title" className="text-3xl font-bold mb-2 text-pacific-900">Professional Edition - $97</h3>
               <p className="text-pacific-700 text-lg">Complete comprehensive guide with all advanced strategies and tools</p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" role="list" aria-label="Premium kit features">
               {premiumFeatures.map((feature, index) => (
                 <div key={index} className="bg-white rounded-lg p-6 shadow-lg border border-pacific-100 hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
                   <div className="flex items-start gap-4">
@@ -685,21 +695,21 @@ const Index = () => {
       </section>
 
       {/* PRICE SECTION */}
-      <section id="price" className="py-20 bg-sand-50">
+      <section id="price" className="py-20 bg-sand-50" aria-labelledby="price-title">
         <div className="max-w-[1200px] mx-auto px-6">
           <div className="text-center mb-12">
-            <h2 className="mb-4">Choose Your Kit</h2>
-            <p className="text-body-l text-muted-foreground max-w-2xl mx-auto">
+            <h2 id="price-title" className="mb-4">Choose Your Kit</h2>
+            <p className="text-body-l text-muted-foreground max-w-2xl mx-auto" aria-describedby="price-title">
               Select the package that matches your needs and budget. Both kits include everything you need to sell successfully.
             </p>
           </div>
           
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto" role="group" aria-label="Pricing options">
             {/* BASIC KIT */}
-            <div className="bg-card rounded-2xl p-8 shadow-card border-2 border-pacific-200/50">
+            <div className="bg-card rounded-2xl p-8 shadow-card border-2 border-pacific-200/50" role="article" aria-labelledby="basic-pricing-title">
             <div className="text-center mb-8">
-                <h3 className="text-2xl font-semibold mb-2">Basic Kit</h3>
-                <div className="text-4xl font-heading font-bold text-pacific-500 mb-2">$19.99</div>
+                <h3 id="basic-pricing-title" className="text-2xl font-semibold mb-2">Basic Kit</h3>
+                <div className="text-4xl font-heading font-bold text-pacific-500 mb-2" aria-label="Price: $19.99">$19.99</div>
                 <p className="text-muted-foreground">Essential tools for confident selling</p>
               </div>
               <ul className="space-y-3 text-left mb-8">
@@ -719,16 +729,16 @@ const Index = () => {
             </div>
 
             {/* PREMIUM KIT */}
-            <div className="bg-gradient-to-br from-pacific-500 to-pacific-600 rounded-2xl p-8 shadow-2xl border-2 border-pacific-400 relative">
+            <div className="bg-gradient-to-br from-pacific-500 to-pacific-600 rounded-2xl p-8 shadow-2xl border-2 border-pacific-400 relative" role="article" aria-labelledby="premium-pricing-title">
               <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                <div className="bg-golden-300 text-pacific-900 px-4 py-2 rounded-full text-sm font-bold flex items-center gap-2">
-                  <Star className="w-4 h-4" />
+                <div className="bg-golden-300 text-pacific-900 px-4 py-2 rounded-full text-sm font-bold flex items-center gap-2" aria-label="Most popular option">
+                  <Star className="w-4 h-4" aria-hidden="true" />
                   MOST POPULAR
                 </div>
               </div>
               <div className="text-center mb-8">
-                <h3 className="text-2xl font-semibold mb-2 text-white">Premium Kit</h3>
-                <div className="text-4xl font-heading font-bold text-golden-300 mb-2">$97</div>
+                <h3 id="premium-pricing-title" className="text-2xl font-semibold mb-2 text-white">Premium Kit</h3>
+                <div className="text-4xl font-heading font-bold text-golden-300 mb-2" aria-label="Price: $97">$97</div>
                 <p className="text-pacific-100">Complete comprehensive guide for maximum profit</p>
               </div>
               <ul className="space-y-3 text-left mb-8">
@@ -1118,7 +1128,8 @@ const Index = () => {
             <p>✓ 30-day money-back guarantee • ✓ Instant access • ✓ Works on all devices</p>
           </div>
         </div>
-      </section>
+        </section>
+      </main>
 
       <Footer />
     </div>

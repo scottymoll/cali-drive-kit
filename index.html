@@ -24,7 +24,52 @@
   </head>
 
   <body>
-    <div id="root"></div>
+    <!-- Fallback content for users with JavaScript disabled -->
+    <noscript>
+      <div style="padding: 2rem; text-align: center; font-family: Inter, sans-serif; max-width: 800px; margin: 0 auto;">
+        <h1 style="color: #1e40af; margin-bottom: 1rem;">CA Car Seller Kit</h1>
+        <p style="font-size: 1.125rem; margin-bottom: 1.5rem; color: #374151;">
+          Step-by-step guide, checklists, scripts, and CA DMV paperwork help—everything you need to sell your car privately in California.
+        </p>
+        <div style="background: #f3f4f6; padding: 1.5rem; border-radius: 0.5rem; margin-bottom: 2rem;">
+          <h2 style="color: #1e40af; margin-bottom: 1rem;">What's Included:</h2>
+          <ul style="text-align: left; max-width: 400px; margin: 0 auto;">
+            <li>Pricing Guide & Worksheets</li>
+            <li>Photo & Listing Blueprint</li>
+            <li>Buyer Screening Scripts</li>
+            <li>Safe Test-Drive Protocol</li>
+            <li>CA DMV Paperwork Steps</li>
+            <li>Offer & Negotiation Tactics</li>
+          </ul>
+        </div>
+        <p style="color: #6b7280; margin-bottom: 1rem;">
+          To access the full interactive experience, please enable JavaScript in your browser.
+        </p>
+        <p style="color: #6b7280;">
+          <strong>Basic Kit:</strong> $19.99 | <strong>Premium Kit:</strong> $97
+        </p>
+      </div>
+    </noscript>
+
+    <!-- Main application container -->
+    <div id="root" role="application" aria-label="California Car Seller Kit Application">
+      <!-- Loading fallback content -->
+      <div id="loading-fallback" style="display: none; min-height: 100vh; display: flex; align-items: center; justify-content: center; background: #f9fafb;">
+        <div style="text-align: center;">
+          <div style="width: 2rem; height: 2rem; border: 2px solid #3b82f6; border-top: 2px solid transparent; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 1rem;"></div>
+          <p style="color: #6b7280;">Loading California Car Seller Kit...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CSS for loading animation -->
+    <style>
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    </style>
+
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
