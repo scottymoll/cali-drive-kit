@@ -8,7 +8,16 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import { useURLValidation } from "@/hooks/use-url-validation";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    },
+  },
+});
 
 const AppContent = () => {
   const { isValid, error, isChecking } = useURLValidation();

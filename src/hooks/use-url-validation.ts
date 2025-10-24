@@ -35,23 +35,26 @@ export function useURLValidation(): URLValidationState {
           return;
         }
 
-        const isValid = isValidURL(currentURL);
-
-        if (!isValid) {
-          const parseResult = safeParseURL(currentURL);
+        // Try to parse the URL first
+        const parseResult = safeParseURL(currentURL);
+        
+        if (parseResult.success) {
           setState({
-            isValid: false,
-            error: parseResult.error || 'Invalid URL format',
+            isValid: true,
             isChecking: false
           });
         } else {
+          // If parsing fails, check if it's a valid URL using the simpler check
+          const isValid = isValidURL(currentURL);
           setState({
-            isValid: true,
+            isValid: isValid,
+            error: isValid ? undefined : (parseResult.error || 'Invalid URL format'),
             isChecking: false
           });
         }
       } catch (error) {
         // For any errors, default to valid to prevent blocking the homepage
+        console.warn('URL validation error:', error);
         setState({
           isValid: true,
           isChecking: false
